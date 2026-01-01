@@ -70,6 +70,7 @@
     <section class="lang active" id="en">
       <h1>Privacy & Security Policy</h1>
       <p>FlashDrop Pro is built with a single principle: <strong>your data never belongs to us</strong>. This document explains exactly how FlashDrop Pro handles privacy, security, and data protection.</p>
+
       <h2>1. Pure Peer-to-Peer Architecture</h2>
       <p>FlashDrop Pro uses WebRTC-based peer-to-peer connections. Files and text are transferred <strong>directly between browsers</strong>.</p>
       <ul>
@@ -77,26 +78,37 @@
         <li>No cloud storage, no intermediaries</li>
         <li>Once the browser tab is closed, all session data is destroyed</li>
       </ul>
+      <p>Signaling data required to establish peer-to-peer connections is temporary, minimal, and never linked to file contents.</p>
+
       <h2>2. Zero Server Storage</h2>
       <ul>
         <li>Files or text content</li>
         <li>Download history / transfer metadata</li>
       </ul>
+
       <h2>3. Zero Logs Policy</h2>
       <ul>
-        <li>No IPs / No user identities</li>
-        <li>No file names/sizes or timestamps</li>
+        <li>We do not intentionally collect, store, or analyze IP addresses or user identities</li>
+        <li>Any transient network metadata required for connection establishment is not retained</li>
+        <li>No file names, sizes, or timestamps are recorded</li>
       </ul>
+
       <h2>4. End-to-End Session Control</h2>
       <p>Users define strict access limits: one-time download, limited counts, or manual stop. Once reached, session self-destructs automatically.</p>
+
       <h2>5. Encryption & Transport Security</h2>
-      <p>All transfers occur over encrypted WebRTC channels. Data is encrypted in transit and never decrypted by our servers.</p>
+      <p>All transfers occur over encrypted WebRTC channels using DTLS-SRTP. Data is encrypted in transit and never decrypted by our servers.</p>
+      <p>Optional client-side AES-256 encryption may be enabled before transmission. Encryption keys are generated and applied locally and are never transmitted or stored.</p>
+
+      <h3>Transparency Notice</h3>
+      <p>As of January 2026, FlashDrop Pro has never received any government, legal, or third-party requests for user data or content.</p>
     </section>
 
     <!-- Chinese -->
     <section class="lang" id="zh">
       <h1>隐私与安全说明</h1>
       <p>FlashDrop Pro 的核心原则只有一个：<strong>你的数据永远不属于我们</strong>。本页面说明 FlashDrop Pro 如何处理隐私与数据安全。</p>
+
       <h2>1. 纯 P2P 架构</h2>
       <p>基于 WebRTC 实现浏览器间点对点连接，文件和文本<strong>直接在设备间传输</strong>。</p>
       <ul>
@@ -104,26 +116,34 @@
         <li>无云端存储，无中间商</li>
         <li>关闭标签页后，所有会话数据立即销毁</li>
       </ul>
+      <p>用于建立 P2P 连接的信令数据仅为临时存在，且不包含任何文件内容。</p>
+
       <h2>2. 零服务器存储</h2>
       <ul>
         <li>文件或文本内容</li>
         <li>下载记录或传输元数据</li>
       </ul>
+
       <h2>3. 零日志政策</h2>
       <ul>
-        <li>不记录 IP / 不记录用户身份</li>
-        <li>不记录文件名/大小或时间戳</li>
+        <li>我们不会主动收集、存储或分析 IP 地址或用户身份</li>
+        <li>连接建立所需的临时网络信息不会被保留</li>
+        <li>不记录文件名、大小或时间戳</li>
       </ul>
+
       <h2>4. 会话自毁机制</h2>
       <p>可设置下载次数限制或手动停止，达到限制后会话自动销毁。</p>
+
       <h2>5. 加密传输</h2>
       <p>所有传输通过 WebRTC 加密通道进行，服务器无法解密数据。</p>
+      <p>可选启用本地 AES-256 客户端加密，密钥仅存在于用户设备本地。</p>
     </section>
 
     <!-- Japanese -->
     <section class="lang" id="ja">
       <h1>プライバシーとセキュリティポリシー</h1>
-      <p>FlashDrop Proは「<strong>ユーザーデータはユーザーのもの</strong>」という原則に基づいて構築されています。</p>
+      <p>FlashDrop Proは「<strong>ユーザーデータは常にユーザーに帰属します</strong>」という原則に基づいて構築されています。</p>
+
       <h2>1. 純粋なP2Pアーキテクチャ</h2>
       <p>WebRTCによりブラウザ間で直接ファイル・テキストを送信します。</p>
       <ul>
@@ -131,26 +151,34 @@
         <li>クラウドや仲介者は使用しません</li>
         <li>タブを閉じるとセッションデータは破棄されます</li>
       </ul>
+      <p>P2P接続確立に必要なシグナリングデータは一時的で、ファイル内容とは関連付けられません。</p>
+
       <h2>2. サーバー保存ゼロ</h2>
       <ul>
         <li>ファイル/テキスト内容は保存されません</li>
         <li>ダウンロード履歴/転送メタデータも保存されません</li>
       </ul>
+
       <h2>3. ログゼロ</h2>
       <ul>
-        <li>IP/ユーザー情報は記録されません</li>
-        <li>ファイル名/サイズやタイムスタンプも記録されません</li>
+        <li>IPやユーザー識別情報を意図的に収集・保存しません</li>
+        <li>接続に必要な一時的なネットワーク情報は保持されません</li>
+        <li>ファイル名/サイズ/タイムスタンプは記録されません</li>
       </ul>
+
       <h2>4. セッション管理</h2>
       <p>ダウンロード回数制限や手動停止が可能。制限到達で自動破棄。</p>
+
       <h2>5. 暗号化</h2>
       <p>すべての転送は WebRTC の暗号化チャネルで実施されます。</p>
+      <p>必要に応じて AES-256 によるローカル暗号化を有効化できます。</p>
     </section>
 
     <!-- Korean -->
     <section class="lang" id="ko">
       <h1>개인정보 및 보안 정책</h1>
-      <p>FlashDrop Pro는 <strong>사용자의 데이터는 절대 저장되지 않습니다</strong> 원칙으로 만들어졌습니다.</p>
+      <p>FlashDrop Pro는 <strong>사용자의 데이터는 항상 사용자에게 귀속됩니다</strong>라는 원칙으로 만들어졌습니다.</p>
+
       <h2>1. 순수 P2P 아키텍처</h2>
       <p>WebRTC로 브라우저 간 직접 파일/텍스트 전송을 합니다.</p>
       <ul>
@@ -158,26 +186,34 @@
         <li>클라우드/중개 서버 없음</li>
         <li>탭 종료 시 세션 데이터 삭제</li>
       </ul>
+      <p>P2P 연결 설정을 위한 신호 데이터는 일시적이며 파일 내용과 연결되지 않습니다.</p>
+
       <h2>2. 서버 저장소 없음</h2>
       <ul>
         <li>파일/텍스트 콘텐츠 저장 안함</li>
         <li>다운로드 기록/메타데이터 저장 안함</li>
       </ul>
+
       <h2>3. 로그 없음</h2>
       <ul>
-        <li>IP/사용자 정보 기록 없음</li>
-        <li>파일명/크기, 타임스탬프 기록 없음</li>
+        <li>IP 또는 사용자 식별 정보를 의도적으로 수집하거나 저장하지 않음</li>
+        <li>연결 설정에 필요한 일시적 네트워크 정보는 보관하지 않음</li>
+        <li>파일명/크기/타임스탬프 기록 없음</li>
       </ul>
+
       <h2>4. 세션 제어</h2>
       <p>다운로드 횟수 제한 가능, 제한 시 자동 삭제</p>
+
       <h2>5. 암호화</h2>
       <p>모든 전송은 WebRTC 암호화 채널 사용</p>
+      <p>선택적으로 AES-256 클라이언트 측 암호화를 사용할 수 있습니다.</p>
     </section>
 
     <!-- Spanish -->
     <section class="lang" id="es">
       <h1>Política de Privacidad y Seguridad</h1>
-      <p>FlashDrop Pro se basa en un principio: <strong>sus datos nunca nos pertenecen</strong>.</p>
+      <p>FlashDrop Pro se basa en un principio: <strong>sus datos siempre le pertenecen a usted</strong>.</p>
+
       <h2>1. Arquitectura P2P Pura</h2>
       <p>Se usan conexiones WebRTC directas entre navegadores para transferir archivos y textos.</p>
       <ul>
@@ -185,26 +221,34 @@
         <li>No hay almacenamiento en nube ni intermediarios</li>
         <li>Al cerrar la pestaña, los datos de sesión se destruyen</li>
       </ul>
+      <p>Los datos de señalización necesarios para establecer la conexión P2P son temporales y no están vinculados al contenido.</p>
+
       <h2>2. Cero almacenamiento en servidor</h2>
       <ul>
         <li>No almacenamos archivos ni contenido de texto</li>
         <li>No almacenamos historial de descargas ni metadatos</li>
       </ul>
+
       <h2>3. Política de cero logs</h2>
       <ul>
-        <li>No registramos IP ni identidad de usuario</li>
-        <li>No registramos nombre/tamaño de archivos ni timestamps</li>
+        <li>No recopilamos ni almacenamos intencionalmente direcciones IP o identidades de usuario</li>
+        <li>La información de red transitoria necesaria para la conexión no se conserva</li>
+        <li>No se registran nombres, tamaños ni marcas de tiempo de archivos</li>
       </ul>
+
       <h2>4. Control de sesión</h2>
       <p>Se pueden definir límites de descarga. Al alcanzarlos, la sesión se autodestruye.</p>
+
       <h2>5. Cifrado</h2>
       <p>Todas las transferencias usan canales WebRTC cifrados.</p>
+      <p>Opcionalmente se puede habilitar cifrado AES-256 del lado del cliente.</p>
     </section>
 
     <!-- Hindi -->
     <section class="lang" id="hi">
       <h1>गोपनीयता और सुरक्षा नीति</h1>
-      <p>FlashDrop Pro इस सिद्धांत पर बना है: <strong>आपका डेटा कभी भी हमारा नहीं होता</strong></p>
+      <p>FlashDrop Pro इस सिद्धांत पर बना है: <strong>आपका डेटा हमेशा आपका ही रहता है</strong></p>
+
       <h2>1. शुद्ध P2P आर्किटेक्चर</h2>
       <p>फ़ाइल और टेक्स्ट <strong>सीधे ब्राउज़र के बीच</strong> (WebRTC) ट्रांसफर होते हैं।</p>
       <ul>
@@ -212,20 +256,27 @@
         <li>कोई क्लाउड स्टोरेज/बीचौलिया नहीं</li>
         <li>टैब बंद होते ही सारा डेटा नष्ट हो जाता है</li>
       </ul>
+      <p>P2P कनेक्शन स्थापित करने के लिए आवश्यक सिग्नलिंग डेटा अस्थायी होता है और फ़ाइल सामग्री से जुड़ा नहीं होता।</p>
+
       <h2>2. ज़ीरो सर्वर स्टोरेज</h2>
       <ul>
         <li>हम फ़ाइल या टेक्स्ट स्टोर नहीं करते</li>
         <li>कोई डाउनलोड हिस्ट्री या मेटाडेटा स्टोर नहीं</li>
       </ul>
+
       <h2>3. ज़ीरो लॉग्स नीति</h2>
       <ul>
-        <li>हम IP या यूज़र पहचान लॉग नहीं करते</li>
-        <li>फ़ाइल नाम/साइज रिकॉर्ड नहीं किए जाते</li>
+        <li>हम IP पते या उपयोगकर्ता पहचान को जानबूझकर एकत्र या संग्रहित नहीं करते</li>
+        <li>कनेक्शन के लिए आवश्यक अस्थायी नेटवर्क जानकारी सहेजी नहीं जाती</li>
+        <li>फ़ाइल नाम, आकार या टाइमस्टैम्प रिकॉर्ड नहीं किए जाते</li>
       </ul>
+
       <h2>4. सेशन कंट्रोल</h2>
       <p>डाउनलोड लिमिट सेट किया जा सकता है। लिमिट पहुँचने पर सेशन ऑटो डिलीट होता है।</p>
+
       <h2>5. एन्क्रिप्शन</h2>
       <p>सभी ट्रांसफर WebRTC एन्क्रिप्टेड चैनल पर होते हैं।</p>
+      <p>वैकल्पिक रूप से AES-256 क्लाइंट-साइड एन्क्रिप्शन सक्षम किया जा सकता है।</p>
     </section>
 
   </div>
