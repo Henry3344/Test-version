@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>About Us | FlashDrop Pro Philosophy</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root { --primary: #6366f1; --bg: #030712; --card: rgba(30, 41, 59, 0.7); --text: #f8fafc; --text-muted: #94a3b8; --border: #4f46e5; --nav-bg: rgba(15, 23, 42, 0.95); }
+    body { font-family: -apple-system, sans-serif; background: var(--bg); color: var(--text); margin: 0; line-height: 1.6; min-height: 100vh; }
+    .stars-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%); pointer-events: none; }
+    .star { position: absolute; background: white; border-radius: 50%; opacity: 0.5; animation: moveStars linear infinite; }
+    @keyframes moveStars { from { transform: translateY(0); } to { transform: translateY(-1000px); } }
+
+    header { position: sticky; top: 0; background: var(--nav-bg); border-bottom: 1px solid var(--border); padding: 15px 25px; display: flex; align-items: center; justify-content: space-between; z-index: 9999; isolation: isolate; backdrop-filter: blur(20px); }
+    header strong { font-size: 20px; font-weight: 900; color: white; }
+    header strong span { color: var(--primary); }
+    select { background: rgba(15, 23, 42, 0.8); color: white; border: 1.5px solid var(--border); padding: 8px 12px; border-radius: 10px; cursor: pointer; }
+
+    main { max-width: 900px; margin: 40px auto; padding: 0 20px 80px; position: relative; z-index: 1; }
+
+    .card { background: var(--card); padding: 40px; border-radius: 30px; backdrop-filter: blur(25px); border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 25px 50px -12px rgba(0,0,0,0.9); position: relative; z-index:1; }
+    h1 { font-size: 32px; color: var(--primary); margin: 0 0 20px 0; border-bottom: 2px solid var(--border); display: inline-block; padding-bottom: 10px; font-weight: 900; }
+    h2 { font-size: 22px; color: white; margin-top: 35px; border-left: 4px solid var(--primary); padding-left: 15px; font-weight: 800; }
+    p { color: var(--text-muted); margin-bottom: 15px; font-size: 15px; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 10px 0; padding-left: 25px; position: relative; color: var(--text-muted); }
+    li::before { content: "✔"; position: absolute; left: 0; color: var(--primary); font-weight: bold; }
+    .contact-box { background: rgba(99, 102, 241, 0.1); padding: 25px; border-radius: 20px; border: 1px dashed var(--primary); margin-top: 40px; }
+    .back-btn { display: inline-block; margin-bottom: 20px; color: var(--primary); text-decoration: none; font-weight: 800; }
+    .lang { display: none; animation: fadeIn 0.5s ease; }
+    .lang.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    footer { border-top: 1px solid var(--border); padding: 30px 20px; text-align: center; color: var(--text-muted); font-size: 13px; }
+  </style>
+</head>
+<body>
+  <div class="stars-container" id="stars"></div>
+  <header>
+    <strong>⚡ Flash<span>Drop</span> Pro</strong>
+    <select onchange="switchLang(this.value)">
+      <option value="en">English</option>
+      <option value="zh">中文</option>
+      <option value="ja">日本語</option>
+      <option value="ko">한국어</option>
+      <option value="es">Español</option>
+      <option value="hi">हिन्दी</option>
+    </select>
+  </header>
+  <main>
+    <a href="index.html" class="back-btn">← Back to Workspace</a>
+    <div class="card">
+      <section class="lang active" id="en">
+        <h1>About Us</h1>
+        <h2>Who We Are</h2>
+        <p>FlashDrop Pro was created to solve a simple but overlooked problem: Most file-sharing tools don’t need to see your data — yet they do.</p>
+        <p>Cloud uploads, account systems, and tracking have become the default. We believe they shouldn’t be.</p>
+        <h2>Our Philosophy</h2>
+        <p>We follow one core principle: <strong>If we don’t need your data, we should never touch it.</strong></p>
+        <ul>
+          <li>We do not store your files or keep logs.</li>
+          <li>We do not build user profiles or monetize data.</li>
+        </ul>
+        <h2>How It Works</h2>
+        <p>Using WebRTC technology, files are sent directly between users. Our servers are used only for minimal signaling.</p>
+        <h2>Who It Is For</h2>
+        <p>Individuals who value privacy, developers, remote teams, and journalists.</p>
+        <div class="contact-box">
+          <h3 style="margin-top:0; color:white;">Contact</h3>
+          <p>Phone: 9292664485<br>Email: flashdroppro@gmail.com</p>
+        </div>
+      </section>
+
+      <section class="lang" id="zh">
+        <h1>关于我们</h1>
+        <h2>我们是谁</h2>
+        <p>FlashDrop Pro 的创建是为了解决一个简单但被忽视的问题：大多数文件共享工具并不需要看到您的数据 —— 但它们确实看到了。</p>
+        <p>云端上传、账户系统、追踪脚本已成为默认标准。我们认为不应如此。</p>
+        <h2>我们的哲学</h2>
+        <p>我们遵循一个核心原则：<strong>如果我们不需要您的数据，我们就永远不应该接触它。</strong></p>
+        <ul>
+          <li>我们不存储您的文件，也不保留日志。</li>
+          <li>我们不建立用户画像，也不通过数据获利。</li>
+        </ul>
+        <h2>工作原理</h2>
+        <p>利用 WebRTC 技术，文件在用户之间直接发送。我们的服务器仅用于极简的连接信号传输。</p>
+        <h2>服务对象</h2>
+        <p>重视隐私的个人、开发者、远程团队以及新闻工作者。</p>
+        <div class="contact-box">
+          <h3 style="margin-top:0; color:white;">联系信息</h3>
+          <p>电话: 9292664485<br>邮箱: flashdroppro@gmail.com</p>
+        </div>
+      </section>
+
+      <section class="lang" id="ja">
+        <h1>私たちについて</h1>
+        <h2>ミッション</h2>
+        <p>FlashDrop Proは、多くのファイル共有ツールが本来必要のないユーザーデータにアクセスしているという問題を解決するために作成されました。</p>
+        <h2>哲学</h2>
+        <p>「<strong>データが必要ないなら、触れるべきではない</strong>」という原則に従っています。</p>
+        <ul>
+          <li>ファイルの保存やログの保持は一切行いません。</li>
+          <li>ユーザープロファイルの作成やデータの収益化は行いません。</li>
+        </ul>
+        <h2>仕組み</h2>
+        <p>WebRTC技術を使用して、ユーザー間で直接ファイルを送信します。サーバーはシグナリングのみに使用されます。</p>
+        <div class="contact-box">
+          <h3 style="margin-top:0; color:white;">連絡先</h3>
+          <p>電話: 9292664485<br>メール: flashdroppro@gmail.com</p>
+        </div>
+      </section>
+
+      <section class="lang" id="ko">
+        <h1>우리 소개</h1>
+        <h2>배경</h2>
+        <p>FlashDrop Pro는 대부분의 파일 공유 도구가 불필요하게 사용자의 데이터에 접근한다는 문제를 해결하기 위해 시작되었습니다。</p>
+        <h2>철학</h2>
+        <p>「<strong>데이터가 필요하지 않다면, 절대 만지지 말아야 한다</strong>」는 원칙을 고수합니다。</p>
+        <ul>
+          <li>파일을 저장하거나 로그를 남기지 않습니다.</li>
+          <li>데이터를 수익화하거나 프로필을 작성하지 않습니다.</li>
+        </ul>
+        <h2>작동 원리</h2>
+        <p>WebRTC 기술을 사용하여 파일을 사용자 간 직접 전송합니다. 서버는 최소한의 시그널링만 수행합니다.</p>
+        <div class="contact-box">
+          <h3 style="margin-top:0; color:white;">연락처</h3>
+          <p>전화: 9292664485<br>이메일: flashdroppro@gmail.com</p>
+        </div>
+      </section>
+
+      <section class="lang" id="es">
+        <h1>Quiénes Somos</h1>
+        <h2>Misión</h2>
+        <p>FlashDrop Pro nació para resolver un problema: la mayoría de las herramientas de intercambio de archivos ven sus datos sin necesidad.</p>
+        <h2>Filosofía</h2>
+        <p>Seguimos un principio: <strong>Si no necesitamos sus datos, nunca debemos tocarlos.</strong></p>
+        <div class="contact-box">
+          <h3 style="margin-top:0; color:white;">Contacto</h3>
+          <p>Teléfono: 9292664485<br>Email: flashdroppro@gmail.com</p>
+        </div>
+      </section>
+
+      <section class="lang" id="hi">
+        <h1>हमारे बारे में</h1>
+        <h2>हमारा दर्शन</h2>
+        <p>हमारा एक ही सिद्धांत है: <strong>यदि हमें आपके डेटा की आवश्यकता नहीं है, तो हमें उसे कभी नहीं छूना चाहिए।</strong></p>
+        <div class="contact-box">
+          <h3 style="margin-top:0; color:white;">संपर्क</h3>
+          <p>फ़ोन: 9292664485<br>ईमेल: flashdroppro@gmail.com</p>
+        </div>
+      </section>
+    </div>
+  </main>
+  <footer>© 2025-2026 FlashDrop Pro · Privacy-First P2P Workspace</footer>
+  <script>
+    function switchLang(lang) { document.querySelectorAll('.lang').forEach(el => el.classList.remove('active')); document.getElementById(lang).classList.add('active'); }
+    function initStars(){ const c=document.getElementById('stars'); for(let i=0;i<80;i++){ const s=document.createElement('div'); s.className='star'; s.style.width=s.style.height=Math.random()*2+'px'; s.style.left=Math.random()*100+'%'; s.style.top=Math.random()*100+'%'; s.style.animationDuration=Math.random()*20+20+'s'; c.appendChild(s);} }
+    window.onload=initStars;
+  </script>
+</body>
+</html>

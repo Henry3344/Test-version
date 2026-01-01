@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Privacy & Security | FlashDrop Pro</title>
+  <meta name="description" content="FlashDrop Pro Privacy & Security Policy. Pure P2P file transfer using WebRTC. Zero server storage, zero logs, self-destructing sessions, and privacy-first design." />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root { 
+      --primary: #6366f1; 
+      --bg: #030712; 
+      --card: rgba(30, 41, 59, 0.7); 
+      --text: #f8fafc; 
+      --text-muted: #94a3b8; 
+      --border: #4f46e5; 
+      --nav-bg: rgba(15, 23, 42, 0.95); 
+    }
+    * { box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; margin:0; background:var(--bg); color:var(--text); line-height:1.7; min-height:100vh; overflow-x:hidden; }
+    .stars-container { position: fixed; top:0; left:0; width:100%; height:100%; z-index:-1; background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%); pointer-events:none; }
+    .star { position:absolute; background:white; border-radius:50%; opacity:0.5; animation: moveStars linear infinite; }
+    @keyframes moveStars { from { transform: translateY(0); } to { transform: translateY(-1000px); } }
+
+    header { position: sticky; top:0; background: var(--nav-bg); border-bottom:1px solid var(--border); padding:15px 25px; display:flex; justify-content: space-between; align-items:center; z-index:9999; isolation:isolate; backdrop-filter: blur(20px); }
+    header strong { font-size: 20px; font-weight:900; color:white; }
+    header strong span { color:var(--primary); }
+    select { background: rgba(15,23,42,0.8); color:white; border:1.5px solid var(--border); padding:8px 12px; border-radius:10px; font-weight:800; cursor:pointer; outline:none; }
+
+    main { max-width:900px; margin:40px auto; padding:0 20px 80px; position:relative; z-index:1; }
+
+    .privacy-card { background: var(--card); padding:40px; border-radius:30px; backdrop-filter:blur(25px); border:1px solid rgba(255,255,255,0.1); box-shadow:0 25px 50px -12px rgba(0,0,0,0.9); position:relative; z-index:1; }
+    h1{ font-size:36px; margin-top:0; color:var(--primary); border-bottom:2px solid var(--border); display:inline-block; padding-bottom:10px; margin-bottom:30px; font-weight:900; }
+    h2{ font-size:22px; color:#a5b4fc; margin-top:1.5em; }
+    h3{ font-size:18px; margin-top:1em; }
+    p{ margin:16px 0; color:var(--text-muted); font-size:15px; }
+    ul{ list-style:none; padding-left:0; margin-left:20px; }
+    li{ margin:10px 0; color:var(--text); position:relative; padding-left:20px; }
+    li::before{ content:"⚡"; position:absolute; left:0; color:var(--primary); font-size:12px; }
+    footer{ border-top:1px solid var(--border); padding:30px 20px; text-align:center; color:var(--text-muted); font-size:13px; background: rgba(3,7,18,0.8); }
+
+    .lang{ display:none; animation:fadeIn 0.5s ease; }
+    .lang.active{ display:block; }
+    @keyframes fadeIn{ from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);} }
+
+    .back-btn{ display:inline-block; margin-bottom:20px; color:var(--primary); text-decoration:none; font-weight:800; font-size:14px; transition:0.3s; }
+    .back-btn:hover{ transform:translateX(-5px); }
+  </style>
+</head>
+<body>
+
+<div class="stars-container" id="stars"></div>
+
+<header>
+  <strong>⚡ Flash<span>Drop</span> Pro</strong>
+  <select onchange="switchLang(this.value)">
+    <option value="en">English</option>
+    <option value="zh">中文</option>
+    <option value="ja">日本語</option>
+    <option value="ko">한국어</option>
+    <option value="es">Español</option>
+    <option value="hi">हिन्दी</option>
+  </select>
+</header>
+
+<main>
+  <a href="index.html" class="back-btn">← Back to Workspace</a>
+  <div class="privacy-card">
+
+    <!-- English -->
+    <section class="lang active" id="en">
+      <h1>Privacy & Security Policy</h1>
+      <p>FlashDrop Pro is built with a single principle: <strong>your data never belongs to us</strong>. This document explains exactly how FlashDrop Pro handles privacy, security, and data protection.</p>
+      <h2>1. Pure Peer-to-Peer Architecture</h2>
+      <p>FlashDrop Pro uses WebRTC-based peer-to-peer connections. Files and text are transferred <strong>directly between browsers</strong>.</p>
+      <ul>
+        <li>No file data is uploaded or stored on servers</li>
+        <li>No cloud storage, no intermediaries</li>
+        <li>Once the browser tab is closed, all session data is destroyed</li>
+      </ul>
+      <h2>2. Zero Server Storage</h2>
+      <ul>
+        <li>Files or text content</li>
+        <li>Download history / transfer metadata</li>
+      </ul>
+      <h2>3. Zero Logs Policy</h2>
+      <ul>
+        <li>No IPs / No user identities</li>
+        <li>No file names/sizes or timestamps</li>
+      </ul>
+      <h2>4. End-to-End Session Control</h2>
+      <p>Users define strict access limits: one-time download, limited counts, or manual stop. Once reached, session self-destructs automatically.</p>
+      <h2>5. Encryption & Transport Security</h2>
+      <p>All transfers occur over encrypted WebRTC channels. Data is encrypted in transit and never decrypted by our servers.</p>
+    </section>
+
+    <!-- Chinese -->
+    <section class="lang" id="zh">
+      <h1>隐私与安全说明</h1>
+      <p>FlashDrop Pro 的核心原则只有一个：<strong>你的数据永远不属于我们</strong>。本页面说明 FlashDrop Pro 如何处理隐私与数据安全。</p>
+      <h2>1. 纯 P2P 架构</h2>
+      <p>基于 WebRTC 实现浏览器间点对点连接，文件和文本<strong>直接在设备间传输</strong>。</p>
+      <ul>
+        <li>文件数据永不上传或存储在服务器上</li>
+        <li>无云端存储，无中间商</li>
+        <li>关闭标签页后，所有会话数据立即销毁</li>
+      </ul>
+      <h2>2. 零服务器存储</h2>
+      <ul>
+        <li>文件或文本内容</li>
+        <li>下载记录或传输元数据</li>
+      </ul>
+      <h2>3. 零日志政策</h2>
+      <ul>
+        <li>不记录 IP / 不记录用户身份</li>
+        <li>不记录文件名/大小或时间戳</li>
+      </ul>
+      <h2>4. 会话自毁机制</h2>
+      <p>可设置下载次数限制或手动停止，达到限制后会话自动销毁。</p>
+      <h2>5. 加密传输</h2>
+      <p>所有传输通过 WebRTC 加密通道进行，服务器无法解密数据。</p>
+    </section>
+
+    <!-- Japanese -->
+    <section class="lang" id="ja">
+      <h1>プライバシーとセキュリティポリシー</h1>
+      <p>FlashDrop Proは「<strong>ユーザーデータはユーザーのもの</strong>」という原則に基づいて構築されています。</p>
+      <h2>1. 純粋なP2Pアーキテクチャ</h2>
+      <p>WebRTCによりブラウザ間で直接ファイル・テキストを送信します。</p>
+      <ul>
+        <li>サーバーにアップロード/保存されません</li>
+        <li>クラウドや仲介者は使用しません</li>
+        <li>タブを閉じるとセッションデータは破棄されます</li>
+      </ul>
+      <h2>2. サーバー保存ゼロ</h2>
+      <ul>
+        <li>ファイル/テキスト内容は保存されません</li>
+        <li>ダウンロード履歴/転送メタデータも保存されません</li>
+      </ul>
+      <h2>3. ログゼロ</h2>
+      <ul>
+        <li>IP/ユーザー情報は記録されません</li>
+        <li>ファイル名/サイズやタイムスタンプも記録されません</li>
+      </ul>
+      <h2>4. セッション管理</h2>
+      <p>ダウンロード回数制限や手動停止が可能。制限到達で自動破棄。</p>
+      <h2>5. 暗号化</h2>
+      <p>すべての転送は WebRTC の暗号化チャネルで実施されます。</p>
+    </section>
+
+    <!-- Korean -->
+    <section class="lang" id="ko">
+      <h1>개인정보 및 보안 정책</h1>
+      <p>FlashDrop Pro는 <strong>사용자의 데이터는 절대 저장되지 않습니다</strong> 원칙으로 만들어졌습니다.</p>
+      <h2>1. 순수 P2P 아키텍처</h2>
+      <p>WebRTC로 브라우저 간 직접 파일/텍스트 전송을 합니다.</p>
+      <ul>
+        <li>서버에 업로드/저장하지 않음</li>
+        <li>클라우드/중개 서버 없음</li>
+        <li>탭 종료 시 세션 데이터 삭제</li>
+      </ul>
+      <h2>2. 서버 저장소 없음</h2>
+      <ul>
+        <li>파일/텍스트 콘텐츠 저장 안함</li>
+        <li>다운로드 기록/메타데이터 저장 안함</li>
+      </ul>
+      <h2>3. 로그 없음</h2>
+      <ul>
+        <li>IP/사용자 정보 기록 없음</li>
+        <li>파일명/크기, 타임스탬프 기록 없음</li>
+      </ul>
+      <h2>4. 세션 제어</h2>
+      <p>다운로드 횟수 제한 가능, 제한 시 자동 삭제</p>
+      <h2>5. 암호화</h2>
+      <p>모든 전송은 WebRTC 암호화 채널 사용</p>
+    </section>
+
+    <!-- Spanish -->
+    <section class="lang" id="es">
+      <h1>Política de Privacidad y Seguridad</h1>
+      <p>FlashDrop Pro se basa en un principio: <strong>sus datos nunca nos pertenecen</strong>.</p>
+      <h2>1. Arquitectura P2P Pura</h2>
+      <p>Se usan conexiones WebRTC directas entre navegadores para transferir archivos y textos.</p>
+      <ul>
+        <li>Datos no se suben ni almacenan en servidores</li>
+        <li>No hay almacenamiento en nube ni intermediarios</li>
+        <li>Al cerrar la pestaña, los datos de sesión se destruyen</li>
+      </ul>
+      <h2>2. Cero almacenamiento en servidor</h2>
+      <ul>
+        <li>No almacenamos archivos ni contenido de texto</li>
+        <li>No almacenamos historial de descargas ni metadatos</li>
+      </ul>
+      <h2>3. Política de cero logs</h2>
+      <ul>
+        <li>No registramos IP ni identidad de usuario</li>
+        <li>No registramos nombre/tamaño de archivos ni timestamps</li>
+      </ul>
+      <h2>4. Control de sesión</h2>
+      <p>Se pueden definir límites de descarga. Al alcanzarlos, la sesión se autodestruye.</p>
+      <h2>5. Cifrado</h2>
+      <p>Todas las transferencias usan canales WebRTC cifrados.</p>
+    </section>
+
+    <!-- Hindi -->
+    <section class="lang" id="hi">
+      <h1>गोपनीयता और सुरक्षा नीति</h1>
+      <p>FlashDrop Pro इस सिद्धांत पर बना है: <strong>आपका डेटा कभी भी हमारा नहीं होता</strong></p>
+      <h2>1. शुद्ध P2P आर्किटेक्चर</h2>
+      <p>फ़ाइल और टेक्स्ट <strong>सीधे ब्राउज़र के बीच</strong> (WebRTC) ट्रांसफर होते हैं।</p>
+      <ul>
+        <li>डेटा सर्वर पर अपलोड/स्टोर नहीं होता</li>
+        <li>कोई क्लाउड स्टोरेज/बीचौलिया नहीं</li>
+        <li>टैब बंद होते ही सारा डेटा नष्ट हो जाता है</li>
+      </ul>
+      <h2>2. ज़ीरो सर्वर स्टोरेज</h2>
+      <ul>
+        <li>हम फ़ाइल या टेक्स्ट स्टोर नहीं करते</li>
+        <li>कोई डाउनलोड हिस्ट्री या मेटाडेटा स्टोर नहीं</li>
+      </ul>
+      <h2>3. ज़ीरो लॉग्स नीति</h2>
+      <ul>
+        <li>हम IP या यूज़र पहचान लॉग नहीं करते</li>
+        <li>फ़ाइल नाम/साइज रिकॉर्ड नहीं किए जाते</li>
+      </ul>
+      <h2>4. सेशन कंट्रोल</h2>
+      <p>डाउनलोड लिमिट सेट किया जा सकता है। लिमिट पहुँचने पर सेशन ऑटो डिलीट होता है।</p>
+      <h2>5. एन्क्रिप्शन</h2>
+      <p>सभी ट्रांसफर WebRTC एन्क्रिप्टेड चैनल पर होते हैं।</p>
+    </section>
+
+  </div>
+</main>
+
+<footer>© 2025 FlashDrop Pro · Privacy-First P2P Workspace</footer>
+
+<script>
+  function switchLang(lang){ document.querySelectorAll('.lang').forEach(el=>el.classList.remove('active')); document.getElementById(lang).classList.add('active'); }
+  function initStars(){ const c=document.getElementById('stars'); for(let i=0;i<80;i++){ const s=document.createElement('div'); s.className='star'; s.style.width=s.style.height=Math.random()*2+'px'; s.style.left=Math.random()*100+'%'; s.style.top=Math.random()*100+'%'; s.style.animationDuration=Math.random()*20+20+'s'; c.appendChild(s);} }
+  window.onload=initStars;
+</script>
+
+</body>
+</html>
