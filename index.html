@@ -137,14 +137,15 @@
         .protection-btn:has(input:checked) .state.off { display: none !important; }
         .protection-btn:has(input:checked) .state.on { display: flex !important; }
 
+        /* 通用弹窗样式 */
         .crypto-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); z-index: 6000; display: none; justify-content: center; align-items: center; backdrop-filter: blur(8px); }
         .crypto-modal-card { background: #0f172a; padding: 30px; border-radius: 24px; border: 1px solid var(--border); width: 90%; max-width: 380px; box-shadow: 0 20px 60px rgba(99, 102, 241, 0.15); display: flex; flex-direction: column; gap: 15px; }
         
-        #crypto-password { 
+        #crypto-password, #alert-password-input { 
             width: 100%; background: rgba(30, 41, 59, 0.5); border: 2px solid #334155; color: white; padding: 16px; border-radius: 14px; font-size: 16px; outline: none; transition: 0.3s; text-align: center; letter-spacing: 1px; margin-bottom: 5px;
         }
-        #crypto-password:focus { border-color: var(--primary); box-shadow: 0 0 15px rgba(99, 102, 241, 0.2); background: rgba(30, 41, 59, 0.8); }
-        #crypto-password::placeholder { color: #64748b; font-weight: 500; letter-spacing: 0; }
+        #crypto-password:focus, #alert-password-input:focus { border-color: var(--primary); box-shadow: 0 0 15px rgba(99, 102, 241, 0.2); background: rgba(30, 41, 59, 0.8); }
+        #crypto-password::placeholder, #alert-password-input::placeholder { color: #64748b; font-weight: 500; letter-spacing: 0; }
 
         .strength-wrapper { display: flex; align-items: center; gap: 10px; margin-bottom: 5px; width: 100%; }
         .strength-track { flex: 1; height: 6px; background: rgba(255, 255, 255, 0.1); border-radius: 3px; overflow: hidden; }
@@ -160,6 +161,11 @@
         @keyframes scanMove { 0% { top: 0; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { top: 100%; opacity: 0; } }
 
         #btn-torch { position: absolute; top: 30px; right: 30px; width: 45px; height: 45px; border-radius: 50%; background: rgba(0,0,0,0.4); border: 1.5px solid white; color: white; font-size: 20px; cursor: pointer; backdrop-filter: blur(4px); display: flex; justify-content: center; align-items: center; z-index: 10001; }
+
+        /* [新增] 震动特效 & 错误样式 */
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }
+        .input-error { border-color: #ef4444 !important; animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both; color: #ef4444 !important; }
+        #pass-error-msg { min-height: 20px; font-size: 12px; color: #ef4444; text-align: center; font-weight: 800; margin-bottom: 5px; }
 
         /* [特效] 步骤条流光特效 */
         .steps-bar { 
@@ -400,6 +406,27 @@
     </div>
 </div>
 
+<div id="alert-modal" class="crypto-modal" style="z-index: 99999;">
+    <div class="crypto-modal-card" style="align-items: center; text-align: center;">
+        <div style="font-size: 40px; margin-bottom: 10px;">⚠️</div>
+        <h3 id="alert-msg" style="color: white; margin: 0 0 20px 0; font-size: 16px; line-height: 1.5;">Message</h3>
+        <button class="action-btn" onclick="document.getElementById('alert-modal').style.display='none'" style="padding: 12px;">OK</button>
+    </div>
+</div>
+
+<div id="pass-input-modal" class="crypto-modal" style="z-index: 99999;">
+    <div class="crypto-modal-card">
+        <h3 id="pass-input-title" style="color: #f59e0b; margin: 0 0 5px 0; font-size: 18px; text-align: center;">🔐 Enter Password</h3>
+        <div id="pass-error-msg"></div>
+        
+        <input type="password" id="alert-password-input" placeholder="Type password..." style="text-align: center;">
+        <div style="display: flex; gap: 10px; margin-top: 10px;">
+            <button class="action-btn" id="btn-pass-confirm" style="flex: 1; padding: 12px; margin:0; background: #f59e0b;">UNLOCK</button>
+            <button class="action-btn" id="btn-pass-cancel" style="flex: 1; padding: 12px; background: #334155; margin:0;">CANCEL</button>
+        </div>
+    </div>
+</div>
+
 <div id="scanner-modal">
     <div class="scanner-container">
         <video id="video-preview" playsinline></video>
@@ -419,7 +446,6 @@
             drop: "DROP TO STAGE", fileLab: "Drop / Click", 
             shareF: "SHARE FILES", shareT: "SHARE TEXT", 
             connect: "DOWNLOAD", save: "📥 SAVE", 
-            // 单按钮状态
             recv: "RECEIVE", decryptRecv: "🔓 DECRYPT & VIEW", decryptSave: "🔓 DECRYPT & SAVE", saveNow: "💾 SAVE NOW",
             
             exp: "Expires: ", copyLink: "📋 COPY LINK", stop: "STOP",
@@ -429,6 +455,10 @@
             inputErr: "Enter 6-digit code.", orScan: "or scan 📷", 
             doneRemind: "DONE! Click SAVE above.", 
             histTitle: "Recent History", fileErr: "Please select files first.", textErr: "Please enter text first.",
+            
+            // [新增] 弹窗文案
+            passTitle: "🔐 Enter Password", passPlaceholder: "Type password...", passUnlock: "UNLOCK", passCancel: "CANCEL",
+            passWrong: "Wrong Password!", passRemaining: "attempts left",
             
             step1: "Select Files<br><span style='font-size:9px; opacity:0.7'>(Type Text)</span>", 
             step2: "Set AES-256<br><span style='font-size:9px; opacity:0.7'>(Option)</span>", 
@@ -440,18 +470,19 @@
             sig1: "No Limits", sig2: "P2P Only", sig3: "Auto-Wipe",
             modalTitle: "Set Password", btnEnable: "ENABLE", btnCancel: "CANCEL",
             aesOff: "AES-256 OFF", aesOn: "AES-256 ON",
+            passWeak: "Password too weak!\nMust be at least 8 characters and include:\n- Uppercase\n- Lowercase\n- Number\n- Special Char",
             btnRuthless: "Ruthless Refusal (Session only)",
             strengthLevels: ["Very Weak", "Weak", "Medium", "Moderate", "Strong", "Very Strong", "Unbreakable"],
             faqTitle: "Common Questions",
-            faqQ1: "Do my files ever touch your servers?", faqA1: "No. Files are sent directly between browsers via P2P. Never stored on our servers.",
-            faqQ2: "Do you store logs or track users?", faqA2: "No. We don't store IPs, logs, or track user identities.",
-            faqQ3: "How is data secured?", faqA3: "End-to-end encryption via WebRTC. We cannot see your data.",
-            faqQ4: "Can recipient see my IP?", faqA4: "Yes, P2P requires direct connection. Use VPN if concerned.",
-            faqQ5: "Suitable for sensitive files?", faqA5: "Yes. Zero-knowledge architecture makes it very safe.",
-            faqQ6: "Can I recover files later?", faqA6: "No. Once closed, data is gone forever.",
+            faqQ1: "Do my files ever touch your servers?", faqA1: "No. Files are sent directly between browsers via P2P.",
+            faqQ2: "Do you store logs?", faqA2: "No. We don't store IPs or logs.",
+            faqQ3: "How is data secured?", faqA3: "End-to-end encryption via WebRTC.",
+            faqQ4: "Can recipient see my IP?", faqA4: "Yes, P2P requires direct connection.",
+            faqQ5: "Suitable for sensitive files?", faqA5: "Yes. Zero-knowledge architecture.",
+            faqQ6: "Can I recover files later?", faqA6: "No. Data is gone when closed.",
             faqQ7: "Can FlashDrop see my files?", faqA7: "No. Impossible by design.",
             faqQ8: "Is password required?", faqA8: "No. It's optional.",
-            faqQ9: "Forgot password?", faqA9: "Files cannot be recovered without it.",
+            faqQ9: "Forgot password?", faqA9: "Files cannot be recovered.",
             techPhrases: ["Generating RSA-4096 Key...", "Initializing WebRTC Handshake...", "Establishing P2P Tunnel...", "Synchronizing Peer Signals...", "Channel Secured!"]
         },
         zh: { 
@@ -471,6 +502,11 @@
             doneRemind: "传输完成！点击上方按钮保存。", 
             histTitle: "最近记录", fileErr: "请先选择文件。", textErr: "请先输入文字。",
             
+            // 弹窗相关
+            passTitle: "🔐 输入密码", passPlaceholder: "在此输入...", passUnlock: "解锁", passCancel: "取消",
+            passWrong: "❌ 密码错误！", passRemaining: "次尝试机会。",
+            passWeak: "密码太弱！\n必须包含8位以上，且含有：\n- 大写字母\n- 小写字母\n- 数字\n- 特殊符号",
+
             step1: "选文件<br><span style='font-size:9px; opacity:0.7'>(可输文字)</span>", 
             step2: "设密码<br><span style='font-size:9px; opacity:0.7'>(可选加密)</span>", 
             step3: "取件码", 
@@ -511,7 +547,10 @@
             inputErr: "6桁のコードを入力してください。", orScan: "QRスキャン 📷", 
             doneRemind: "完了！上のボタンで保存してください。", 
             histTitle: "最近の履歴", fileErr: "ファイルを選択してください。", textErr: "テキストを入力してください。",
-            
+            passTitle: "🔐 パスワード入力", passPlaceholder: "ここに入力...", passUnlock: "解除", passCancel: "キャンセル",
+            passWrong: "❌ パスワードが違います！", passRemaining: "回試行可能。",
+            passWeak: "パスワードが弱すぎます！\n8文字以上で、以下を含めてください：\n- 大文字\n- 小文字\n- 数字\n- 記号",
+
             step1: "ファイル選択<br><span style='font-size:9px; opacity:0.7'>(テキスト可)</span>", 
             step2: "暗号化設定<br><span style='font-size:9px; opacity:0.7'>(任意)</span>", 
             step3: "コード取得", 
@@ -552,7 +591,10 @@
             inputErr: "6자리 코드를 입력하세요.", orScan: "스캔하기 📷", 
             doneRemind: "완료! 위 버튼을 눌러 저장하세요.", 
             histTitle: "최근 기록", fileErr: "파일을 먼저 선택하세요.", textErr: "텍스트를 먼저 입력하세요.",
-            
+            passTitle: "🔐 비밀번호 입력", passPlaceholder: "여기에 입력...", passUnlock: "잠금 해제", passCancel: "취소",
+            passWrong: "❌ 비밀번호 오류!", passRemaining: "회 시도 가능.",
+            passWeak: "비밀번호가 너무 약합니다!\n8자 이상이어야 하며 다음을 포함해야 합니다:\n- 대문자\n- 소문자\n- 숫자\n- 특수 문자",
+
             step1: "파일 선택<br><span style='font-size:9px; opacity:0.7'>(텍스트 가능)</span>", 
             step2: "비번 설정<br><span style='font-size:9px; opacity:0.7'>(선택 사항)</span>", 
             step3: "코드 받기", 
@@ -593,7 +635,10 @@
             inputErr: "Introduce el código de 6 dígitos.", orScan: "o escanear 📷", 
             doneRemind: "¡HECHO! Clic arriba para guardar.", 
             histTitle: "Historial Reciente", fileErr: "Selecciona archivos primero.", textErr: "Introduce texto primero.",
-            
+            passTitle: "🔐 Contraseña", passPlaceholder: "Escribe aquí...", passUnlock: "DESBLOQUEAR", passCancel: "CANCELAR",
+            passWrong: "❌ Contraseña incorrecta", passRemaining: "intentos restantes.",
+            passWeak: "¡Contraseña muy débil!\nDebe tener 8+ caracteres e incluir:\n- Mayúsculas\n- Minúsculas\n- Números\n- Símbolos",
+
             step1: "Elegir Archivos<br><span style='font-size:9px; opacity:0.7'>(o Texto)</span>", 
             step2: "Cifrado AES<br><span style='font-size:9px; opacity:0.7'>(Opcional)</span>", 
             step3: "Obtener Código", 
@@ -634,7 +679,10 @@
             inputErr: "6-अंकीय कोड दर्ज करें।", orScan: "स्कैन करें 📷", 
             doneRemind: "पूर्ण! सहेजें पर क्लिक करें।", 
             histTitle: "हाल का इतिहास", fileErr: "कृपया पहले फ़ाइलें चुनें।", textErr: "कृपया पहले टेक्स्ट दर्ज करें।",
-            
+            passTitle: "🔐 पासवर्ड दर्ज करें", passPlaceholder: "यहाँ टाइप करें...", passUnlock: "अनलॉक", passCancel: "रद्द करें",
+            passWrong: "❌ गलत पासवर्ड!", passRemaining: "प्रयास शेष।",
+            passWeak: "पासवर्ड बहुत कमजोर है!\nकम से कम 8 वर्ण और इसमें शामिल होने चाहिए:\n- अपरकेस\n- लोअरकेस\n- नंबर\n- सिंबल",
+
             step1: "फ़ाइलें चुनें<br><span style='font-size:9px; opacity:0.7'>(टेक्स्ट लिखें)</span>", 
             step2: "पासवर्ड सेट करें<br><span style='font-size:9px; opacity:0.7'>(वैकल्पिक)</span>", 
             step3: "कोड प्राप्त करें", 
@@ -671,6 +719,7 @@
         const d = I18N[currLang];
         const tagEl = document.getElementById('currentLangTag');
         if(tagEl) tagEl.innerText = d.tag;
+        
         const map = {
             'tab-send': d.tabSend, 'tab-receive': d.tabReceive,
             'drop-text': d.drop, 'label-files': d.fileLab,
@@ -689,7 +738,8 @@
             'faq-q3': d.faqQ3, 'faq-a3': d.faqA3, 'faq-q4': d.faqQ4, 'faq-a4': d.faqA4,
             'faq-q5': d.faqQ5, 'faq-a5': d.faqA5, 'faq-q6': d.faqQ6, 'faq-a6': d.faqA6,
             'faq-q7': d.faqQ7, 'faq-a7': d.faqA7, 'faq-q8': d.faqQ8, 'faq-a8': d.faqA8,
-            'faq-q9': d.faqQ9, 'faq-a9': d.faqA9
+            'faq-q9': d.faqQ9, 'faq-a9': d.faqA9,
+            'pass-input-title': d.passTitle, 'btn-pass-confirm': d.passUnlock, 'btn-pass-cancel': d.passCancel
         };
         for (const [id, text] of Object.entries(map)) {
             const el = document.getElementById(id);
@@ -698,10 +748,66 @@
                 else { el.innerHTML = text; }
             }
         }
+        document.getElementById('alert-password-input').placeholder = d.passPlaceholder;
+        
         const badgeContainer = document.getElementById('trust-badges');
         if(badgeContainer) {
             badgeContainer.innerHTML = d.badges.map(b => `<span class="status-tag" style="font-size: 9px; font-weight: 700; color: var(--text-muted); background: rgba(255,255,255,0.03); padding: 2px 6px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); white-space: nowrap; letter-spacing: 0.5px;">${b}</span>`).join('');
         }
+    }
+
+    function showCustomAlert(msg) {
+        document.getElementById('alert-msg').innerText = msg;
+        document.getElementById('alert-modal').style.display = 'flex';
+    }
+
+    /* [核心] 密码输入弹窗：支持震动反馈，不关闭 */
+    function requestPassword(attemptsLeft) {
+        return new Promise((resolve) => {
+            const modal = document.getElementById('pass-input-modal');
+            const inp = document.getElementById('alert-password-input');
+            const errDiv = document.getElementById('pass-error-msg');
+            const btnOk = document.getElementById('btn-pass-confirm');
+            const btnCancel = document.getElementById('btn-pass-cancel');
+            
+            // 如果是重试，显示错误信息并震动
+            if (attemptsLeft !== undefined) {
+                errDiv.innerText = `${I18N[currLang].passWrong} ${attemptsLeft} ${I18N[currLang].passRemaining}`;
+                inp.classList.add('input-error');
+                setTimeout(() => inp.classList.remove('input-error'), 500);
+            } else {
+                // 首次打开清空
+                errDiv.innerText = "";
+                inp.value = ""; 
+            }
+            
+            modal.style.display = 'flex';
+            inp.focus();
+
+            // 解绑旧事件，防止重复触发
+            const cleanup = () => {
+                btnOk.onclick = null;
+                btnCancel.onclick = null;
+                inp.onkeydown = null;
+            };
+
+            const confirm = () => {
+                const val = inp.value;
+                if(val) { 
+                    cleanup(); 
+                    // 注意：这里不关闭modal，等待解密结果决定是关闭还是报错
+                    resolve(val); 
+                }
+            };
+
+            btnOk.onclick = confirm;
+            btnCancel.onclick = () => {
+                cleanup(); 
+                modal.style.display = 'none'; // 取消则关闭
+                resolve(null); 
+            };
+            inp.onkeydown = (e) => { if(e.key === 'Enter') confirm(); };
+        });
     }
 
     function initDragAndDrop() {
@@ -714,18 +820,15 @@
 
     function dismissAdBlock() { isAdBlockIgnored = true; document.getElementById('safety-notice-view').style.display = 'none'; document.querySelectorAll('.ad-space, .ad-side').forEach(el => el.style.display = 'none'); }
 
-    // [修复] 调整检测顺序：先检查内容，再检查广告
     function triggerAd(mode) {
-        // 1. 内容/输入校验 (Priority High)
         if(mode === 'receive') {
             document.getElementById('targetCode').blur(); 
             const codeVal = document.getElementById('targetCode').value;
-            if(!codeVal || codeVal.length < 6) { alert(I18N[currLang].inputErr); return; }
+            if(!codeVal || codeVal.length < 6) { showCustomAlert(I18N[currLang].inputErr); return; }
         }
-        if(mode === 'send-file' && stagedFiles.length === 0) { alert(I18N[currLang].fileErr); return; }
-        if(mode === 'send-text' && !document.getElementById('quickText').value.trim()) { alert(I18N[currLang].textErr); return; }
+        if(mode === 'send-file' && stagedFiles.length === 0) { showCustomAlert(I18N[currLang].fileErr); return; }
+        if(mode === 'send-text' && !document.getElementById('quickText').value.trim()) { showCustomAlert(I18N[currLang].textErr); return; }
 
-        // 2. 广告逻辑 (Priority Low)
         if(isAdBlockIgnored) { mode.startsWith('send') ? initSender() : startReceiving(); return; }
         if(detectAdBlock()) return;
 
@@ -762,15 +865,7 @@
     };
 
     function showCryptoModal() { 
-        // [修复] 关闭时清空所有密码数据
-        if(isEncrypted) { 
-            isEncrypted = false; 
-            aesKey = ""; 
-            document.getElementById('crypto-password').value = ""; // 清空输入框
-            checkStrength(""); // 重置强度条
-            updateLockUI(); 
-            return; 
-        } 
+        if(isEncrypted) { isEncrypted = false; aesKey = ""; document.getElementById('crypto-password').value = ""; checkStrength(""); updateLockUI(); return; } 
         document.getElementById('crypto-modal').style.display = 'flex'; 
     }
     function closeCryptoModal() { document.getElementById('crypto-modal').style.display = 'none'; }
@@ -786,7 +881,7 @@
     function confirmEncryption() {
         const p = document.getElementById('crypto-password').value;
         const hasUpper = /[A-Z]/.test(p); const hasLower = /[a-z]/.test(p); const hasNum = /[0-9]/.test(p); const hasSym = /[^A-Za-z0-9]/.test(p); const isLongEnough = p.length >= 8;
-        if (!isLongEnough || !hasUpper || !hasLower || !hasNum || !hasSym) { alert("Password too weak!\nMust be at least 8 characters."); return; }
+        if (!isLongEnough || !hasUpper || !hasLower || !hasNum || !hasSym) { showCustomAlert(I18N[currLang].passWeak); return; }
         aesKey = p; isEncrypted = true; updateLockUI(); closeCryptoModal();
     }
     function updateLockUI() { document.getElementById('protection-toggle-input').checked = isEncrypted; }
@@ -802,7 +897,7 @@
         });
         peer.on('connection', c => {
             c.on('data', d => { 
-                if (d.type === 'security_burn') { alert("⚠️ SECURITY ALERT: Recipient failed authentication 3 times."); resetSender(); return; }
+                if (d.type === 'security_burn') { showCustomAlert("⚠️ SECURITY ALERT: Recipient failed authentication 3 times."); resetSender(); return; }
                 if(d.type === 'confirm_save') { currentDownloads++; if(currentDownloads >= parseInt(document.getElementById('downloadLimit').value)) resetSender(); } 
             });
             c.on('open', async () => {
@@ -851,17 +946,25 @@
                         if(d.encrypted) {
                             let attempts = 0;
                             while(true) {
-                                const pass = prompt(`🔐 Encrypted! Attempt ${attempts+1}/3. Enter Password:`);
+                                // 首次调用不传attemptsLeft
+                                const pass = await requestPassword(attempts > 0 ? 3 - attempts : undefined);
                                 if(!pass) return; 
                                 try {
                                     const res = await fetch(d.data); const blob = await res.blob();
                                     const ptBlob = await FlashDropCrypto.decrypt(blob, pass);
                                     finalTxt = await ptBlob.text();
+                                    // 成功：关闭弹窗
+                                    document.getElementById('pass-input-modal').style.display = 'none';
                                     break; 
                                 } catch(e) {
                                     attempts++;
-                                    if(attempts >= 3) { conn.send({ type: 'security_burn' }); alert("❌ SECURITY BREACH: Data Wiped."); resetReceiver(); return; }
-                                    alert(`❌ Wrong Password! ${3 - attempts} attempts remaining.`);
+                                    if(attempts >= 3) { 
+                                        document.getElementById('pass-input-modal').style.display = 'none';
+                                        conn.send({ type: 'security_burn' }); 
+                                        showCustomAlert("❌ SECURITY BREACH: Data Wiped."); 
+                                        resetReceiver(); return; 
+                                    }
+                                    // 失败：循环继续，再次调用requestPassword会触发震动
                                 }
                             }
                         }
@@ -899,6 +1002,7 @@
                 }
                 else if(d.type === 'done') {
                     if(downloadDotsIdx) clearInterval(downloadDotsIdx);
+                    
                     const label = (meta && meta.encrypted) ? I18N[currLang].decryptSave : I18N[currLang].save;
                     const bg = (meta && meta.encrypted) ? "#f59e0b" : "#10b981";
                     btn.innerText = label; btn.style.background = bg; btn.disabled = false; btn.style.opacity = "1";
@@ -912,14 +1016,16 @@
                         if (meta && meta.encrypted) {
                             let attempts = 0;
                             while(true) {
-                                const pass = prompt(`🔐 Encrypted File! Attempt ${attempts+1}/3. Enter Password:`);
+                                const pass = await requestPassword(attempts > 0 ? 3 - attempts : undefined);
                                 if (!pass) return; 
                                 try {
                                     finalBlob = await FlashDropCrypto.decrypt(finalBlob, pass);
                                     
-                                    // [修复] 解密成功后，按钮变绿提示手动点击
+                                    // 成功：关闭弹窗，按钮变绿
+                                    document.getElementById('pass-input-modal').style.display = 'none';
                                     btn.innerText = I18N[currLang].saveNow || "💾 SAVE NOW";
                                     btn.style.background = "#10b981";
+                                    
                                     btn.onclick = () => {
                                         const u = window.URL.createObjectURL(finalBlob);
                                         const a = document.createElement('a'); a.href = u;
@@ -932,8 +1038,12 @@
 
                                 } catch (e) {
                                     attempts++;
-                                    if(attempts >= 3) { conn.send({ type: 'security_burn' }); alert("❌ SECURITY BREACH: Data Wiped."); resetReceiver(); return; }
-                                    alert(`❌ Wrong Password! ${3 - attempts} attempts remaining.`);
+                                    if(attempts >= 3) { 
+                                        document.getElementById('pass-input-modal').style.display = 'none';
+                                        conn.send({ type: 'security_burn' }); 
+                                        showCustomAlert("❌ SECURITY BREACH: Data Wiped."); 
+                                        resetReceiver(); return; 
+                                    }
                                 }
                             }
                         } else {
@@ -962,11 +1072,9 @@
     }
     function copyReceivedText() { 
         navigator.clipboard.writeText(document.getElementById('receivedText').innerText); 
-        alert("Copied!"); 
-        // [修复] 复制后重置
+        showCustomAlert("Copied!"); 
         document.getElementById('receivedText').innerText = "";
         document.getElementById('receivedText-container').style.display = 'none';
-        
         if(activeConn && activeConn.open) { activeConn.send({ type: 'confirm_save' }); }
         resetReceiver(); 
     }
@@ -1018,7 +1126,7 @@
     function renderStagedList() { const list = document.getElementById('stagedList'); list.style.display = stagedFiles.length ? 'block' : 'none'; list.innerHTML = stagedFiles.map((f, i) => `<div class="staged-item"><span>📄 ${f.name.length > 15 ? f.name.substring(0,12)+'...' : f.name}</span><span style="color:var(--danger); cursor:pointer; font-weight:bold; padding:0 5px;" onclick="stagedFiles.splice(${i},1);renderStagedList()">✕</span></div>`).join(''); }
     
     async function toggleTorch() { if (!videoTrack) return; torchOn = !torchOn; try { await videoTrack.applyConstraints({ advanced: [{ torch: torchOn }] }); } catch (e) {} }
-    async function openScanner() { document.getElementById('scanner-modal').style.display='flex'; try { const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } }); const video = document.getElementById('video-preview'); video.srcObject = stream; videoTrack = stream.getVideoTracks()[0]; video.play(); requestAnimationFrame(tickScanner); } catch (e) { alert("Camera failed"); closeScanner(); } }
+    async function openScanner() { document.getElementById('scanner-modal').style.display='flex'; try { const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } }); const video = document.getElementById('video-preview'); video.srcObject = stream; videoTrack = stream.getVideoTracks()[0]; video.play(); requestAnimationFrame(tickScanner); } catch (e) { showCustomAlert("Camera failed"); closeScanner(); } }
     function closeScanner() { document.getElementById('scanner-modal').style.display='none'; if(videoTrack) videoTrack.stop(); torchOn = false; }
     function tickScanner() { const v = document.getElementById('video-preview'); if(v.readyState === v.HAVE_ENOUGH_DATA) { const cvs = document.createElement("canvas"); cvs.width = v.videoWidth; cvs.height = v.videoHeight; const ctx = cvs.getContext("2d"); ctx.drawImage(v, 0, 0); const data = jsQR(ctx.getImageData(0,0,cvs.width,cvs.height).data, cvs.width, cvs.height); if(data) { const c = new URL(data.data).searchParams.get("c"); if(c) { document.getElementById('targetCode').value = c; closeScanner(); triggerAd('receive'); return; } } } if(document.getElementById('scanner-modal').style.display === 'flex') requestAnimationFrame(tickScanner); }
     function initStars() { const c = document.getElementById('stars'); for(let i=0; i<80; i++) { const s = document.createElement('div'); s.className = 'star'; s.style.width = s.style.height = Math.random()*2+'px'; s.style.left = Math.random()*100+'%'; s.style.top = Math.random()*100+'%'; s.style.animationDuration = Math.random()*20+20+'s'; c.appendChild(s); } }
