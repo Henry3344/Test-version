@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -17,146 +16,147 @@
       --nav-bg: rgba(15, 23, 42, 0.95);
     }
 
-```
-* { box-sizing: border-box; }
+    * { box-sizing: border-box; }
 
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  margin: 0;
-  background: var(--bg);
-  color: var(--text);
-  line-height: 1.7;
-  min-height: 100vh;
-  overflow-x: hidden;
-}
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
 
-.stars-container {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
-  pointer-events: none;
-}
+    .stars-container {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+      pointer-events: none;
+    }
 
-.star {
-  position: absolute;
-  background: white;
-  border-radius: 50%;
-  opacity: 0.5;
-  animation: moveStars linear infinite;
-}
+    .star {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      opacity: 0.5;
+      animation: moveStars linear infinite;
+    }
 
-@keyframes moveStars {
-  from { transform: translateY(0); }
-  to { transform: translateY(-1000px); }
-}
+    @keyframes moveStars {
+      from { transform: translateY(0); }
+      to { transform: translateY(-1000px); }
+    }
 
-header {
-  position: sticky;
-  top: 0;
-  background: var(--nav-bg);
-  border-bottom: 1px solid var(--border);
-  padding: 15px 25px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  backdrop-filter: blur(20px);
-  z-index: 100;
-}
+    header {
+      position: sticky;
+      top: 0;
+      background: var(--nav-bg);
+      border-bottom: 1px solid var(--border);
+      padding: 15px 25px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      backdrop-filter: blur(20px);
+      z-index: 100;
+    }
 
-header strong {
-  font-size: 20px;
-  font-weight: 900;
-  color: white;
-}
+    header strong {
+      font-size: 20px;
+      font-weight: 900;
+      color: white;
+    }
 
-header strong span { color: var(--primary); }
+    header strong span { color: var(--primary); }
 
-select {
-  background: rgba(15, 23, 42, 0.8);
-  color: white;
-  border: 1.5px solid var(--border);
-  padding: 8px 12px;
-  border-radius: 10px;
-  font-weight: 800;
-}
+    select {
+      background: rgba(15, 23, 42, 0.8);
+      color: white;
+      border: 1.5px solid var(--border);
+      padding: 8px 12px;
+      border-radius: 10px;
+      font-weight: 800;
+      cursor: pointer;
+      outline: none;
+    }
 
-main {
-  max-width: 900px;
-  margin: 40px auto;
-  padding: 0 20px 80px;
-}
+    main {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 0 20px 80px;
+    }
 
-.privacy-card {
-  background: var(--card);
-  padding: 40px;
-  border-radius: 30px;
-  backdrop-filter: blur(25px);
-  border: 1px solid rgba(255,255,255,0.1);
-  box-shadow: 0 25px 50px -12px rgba(0,0,0,0.9);
-}
+    .privacy-card {
+      background: var(--card);
+      padding: 40px;
+      border-radius: 30px;
+      backdrop-filter: blur(25px);
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.9);
+    }
 
-h1 {
-  color: var(--primary);
-  font-size: 36px;
-  margin-top: 0;
-  font-weight: 900;
-  border-bottom: 2px solid var(--border);
-  display: inline-block;
-  padding-bottom: 10px;
-  margin-bottom: 30px;
-}
+    h1 {
+      color: var(--primary);
+      font-size: 36px;
+      margin-top: 0;
+      font-weight: 900;
+      border-bottom: 2px solid var(--border);
+      display: inline-block;
+      padding-bottom: 10px;
+      margin-bottom: 30px;
+    }
 
-h2 {
-  margin-top: 30px;
-  font-size: 22px;
-  color: #a5b4fc;
-  font-weight: 800;
-}
+    h2 {
+      margin-top: 30px;
+      font-size: 22px;
+      color: #a5b4fc;
+      font-weight: 800;
+    }
 
-p {
-  color: var(--text-muted);
-  font-size: 15px;
-}
+    p {
+      color: var(--text-muted);
+      font-size: 15px;
+    }
 
-ul { list-style: none; padding-left: 0; }
-li {
-  margin: 10px 0;
-  padding-left: 22px;
-  position: relative;
-}
-li::before {
-  content: "⚡";
-  position: absolute;
-  left: 0;
-  color: var(--primary);
-}
+    ul { list-style: none; padding-left: 0; }
+    li {
+      margin: 10px 0;
+      padding-left: 22px;
+      position: relative;
+    }
+    li::before {
+      content: "⚡";
+      position: absolute;
+      left: 0;
+      color: var(--primary);
+    }
 
-.lang { display: none; animation: fadeIn .4s ease; }
-.lang.active { display: block; }
+    .lang { display: none; animation: fadeIn .4s ease; }
+    .lang.active { display: block; }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: none; }
-}
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: none; }
+    }
 
-.back-btn {
-  display: inline-block;
-  margin-bottom: 20px;
-  color: var(--primary);
-  font-weight: 800;
-  text-decoration: none;
-}
+    .back-btn {
+      display: inline-block;
+      margin-bottom: 20px;
+      color: var(--primary);
+      font-weight: 800;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+    .back-btn:hover { transform: translateX(-5px); }
 
-footer {
-  border-top: 1px solid var(--border);
-  padding: 30px 20px;
-  text-align: center;
-  font-size: 13px;
-  color: var(--text-muted);
-}
-```
-
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 30px 20px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
   </style>
 </head>
 
@@ -180,8 +180,6 @@ footer {
 <a href="index.html" class="back-btn">← Back to Workspace</a>
 
 <div class="privacy-card">
-
-<!-- EN -->
 
 <section class="lang active" id="en">
 <h1>Privacy & Security Policy</h1>
@@ -217,11 +215,12 @@ footer {
 </ul>
 <p>Even with encryption enabled, FlashDrop Pro cannot access encrypted content.</p>
 
-<h2>6. Responsible Use Notice</h2>
-<p>This service must not be used for any illegal activities, including but not limited to piracy, hacking, or distribution of illegal content. Users are solely responsible for their actions.</p>
-</section>
+<h2>6. Disclaimer & Responsible Use</h2>
+<p>FlashDrop Pro acts solely as a data transfer conduit. We have no access to, and accept no responsibility or liability for, the content transferred by users. Users are strictly prohibited from using this service for illegal activities.</p>
 
-<!-- 中文 -->
+<h2>7. Cookie & Tracking Policy</h2>
+<p>We do not use any cookies or tracking technologies to monitor user behavior.</p>
+</section>
 
 <section class="lang" id="zh">
 <h1>隐私与安全说明</h1>
@@ -257,11 +256,12 @@ footer {
 </ul>
 <p>即使启用加密，FlashDrop Pro 也无法访问数据。</p>
 
-<h2>6. 责任使用声明</h2>
-<p>本服务不得用于任何非法活动，包括但不限于盗版、黑客攻击或非法内容分发。用户需对自己的行为负责。</p>
-</section>
+<h2>6. 免责声明与责任使用</h2>
+<p>FlashDrop Pro 仅充当数据传输通道。我们无法访问用户传输的内容，也不对内容承担任何责任或义务。严禁用户使用本服务进行非法活动。</p>
 
-<!-- JA -->
+<h2>7. Cookie 与追踪政策</h2>
+<p>本站不使用任何 Cookie 或追踪技术来监视用户行为。</p>
+</section>
 
 <section class="lang" id="ja">
 <h1>プライバシーとセキュリティ</h1>
@@ -297,11 +297,12 @@ footer {
 </ul>
 <p>暗号化を有効にしても、FlashDrop Pro はデータにアクセスできません。</p>
 
-<h2>6. 責任ある利用の注意</h2>
-<p>本サービスは違法行為に使用してはなりません。違法コンテンツの配布、ハッキング、海賊行為などを含みます。ユーザー自身が行為に責任を負います。</p>
-</section>
+<h2>6. 免責事項と利用責任</h2>
+<p>FlashDrop Pro はデータ転送のパイプラインとしてのみ機能します。ユーザーが転送するコンテンツにアクセスすることはなく、それに対していかなる責任も負いません。本サービスを違法行為に使用することは固く禁じられています。</p>
 
-<!-- KO -->
+<h2>7. Cookie と追跡ポリシー</h2>
+<p>当サイトでは、ユーザーの行動を監視するために Cookie や追跡技術を使用することはありません。</p>
+</section>
 
 <section class="lang" id="ko">
 <h1>개인정보 및 보안</h1>
@@ -337,11 +338,12 @@ footer {
 </ul>
 <p>암호화를 사용해도 FlashDrop Pro는 데이터에 접근할 수 없습니다。</p>
 
-<h2>6. 책임 있는 사용 알림</h2>
-<p>이 서비스는 불법 활동에 사용할 수 없습니다. 불법 콘텐츠 배포, 해킹, 해적 행위 등을 포함하며, 사용자는 자신의 행위에 대해 전적으로 책임집니다。</p>
-</section>
+<h2>6. 면책 조항 및 책임 있는 사용</h2>
+<p>FlashDrop Pro는 데이터 전송 통로 역할만 합니다. 우리는 사용자가 전송하는 콘텐츠에 접근할 수 없으며, 이에 대해 어떠한 책임도 지지 않습니다. 이 서비스를 불법 활동에 사용하는 것은 엄격히 금지됩니다。</p>
 
-<!-- ES -->
+<h2>7. 쿠키 및 추적 정책</h2>
+<p>본 사이트는 사용자 행동을 모니터링하기 위해 쿠키나 추적 기술을 사용하지 않습니다。</p>
+</section>
 
 <section class="lang" id="es">
 <h1>Privacidad y Seguridad</h1>
@@ -377,11 +379,12 @@ footer {
 </ul>
 <p>Incluso con el cifrado activado, FlashDrop Pro no puede acceder al contenido cifrado.</p>
 
-<h2>6. Aviso de uso responsable</h2>
-<p>Este servicio no debe usarse para actividades ilegales, incluyendo pero no limitado a piratería, hacking o distribución de contenido ilegal. Los usuarios son totalmente responsables de sus acciones.</p>
-</section>
+<h2>6. Descargo de responsabilidad y uso responsable</h2>
+<p>FlashDrop Pro actúa únicamente como un conducto de transferencia de datos. No tenemos acceso y no aceptamos ninguna responsabilidad por el contenido transferido por los usuarios. Está estrictamente prohibido utilizar este servicio para actividades ilegales.</p>
 
-<!-- HI -->
+<h2>7. Política de Cookies y Rastreo</h2>
+<p>No utilizamos cookies ni tecnologías de seguimiento para monitorear el comportamiento del usuario.</p>
+</section>
 
 <section class="lang" id="hi">
 <h1>गोपनीयता और सुरक्षा</h1>
@@ -417,8 +420,11 @@ footer {
 </ul>
 <p>एन्क्रिप्शन सक्षम होने पर भी, FlashDrop Pro डेटा तक पहुँच नहीं सकता।</p>
 
-<h2>6. जिम्मेदार उपयोग नोटिस</h2>
-<p>इस सेवा का उपयोग किसी भी अवैध गतिविधियों के लिए नहीं किया जाना चाहिए, जैसे पाइरेसी, हैकिंग या अवैध सामग्री का वितरण। उपयोगकर्ता अपने कार्यों के लिए पूरी तरह जिम्मेदार हैं।</p>
+<h2>6. अस्वीकरण और जिम्मेदार उपयोग</h2>
+<p>FlashDrop Pro केवल डेटा ट्रांसफर माध्यम के रूप में कार्य करता है। उपयोगकर्ताओं द्वारा ट्रांसफर की गई सामग्री तक हमारी कोई पहुँच नहीं है, और हम इसके लिए कोई जिम्मेदारी स्वीकार नहीं करते हैं। अवैध गतिविधियों के लिए इस सेवा का उपयोग सख्त वर्जित है।</p>
+
+<h2>7. कुकी और ट्रैकिंग नीति</h2>
+<p>हम उपयोगकर्ता व्यवहार की निगरानी के लिए किसी भी कुकीज़ या ट्रैकिंग तकनीकों का उपयोग नहीं करते हैं।</p>
 </section>
 
 </div>
