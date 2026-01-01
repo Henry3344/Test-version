@@ -7,6 +7,9 @@
 <meta name="description" content="Secure P2P file transfer with optional AES-256 encryption. No servers, no logs, no limits.">
 <meta name="keywords" content="P2P transfer, encrypted file sharing, WebRTC, privacy first, file drop">
 
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://unpkg.com https://cdn.jsdelivr.net https://www.highperformanceformat.com blob: data:; img-src 'self' data: blob:; media-src 'self' blob: data:; connect-src *; frame-src 'self' https://www.highperformanceformat.com;">
+<meta name="referrer" content="no-referrer">
+
 <meta property="og:title" content="FlashDrop Pro — Secure P2P Workspace">
 <meta property="og:description" content="Browser-based P2P file sharing. Files never touch our servers.">
     
@@ -359,11 +362,13 @@
                                 
                                 <div class="pwd-group">
                                     <input type="password" id="crypto-password" placeholder="Type a strong password..." 
-                                           oninput="checkStrength(this.value)" autocomplete="new-password">
+                                           oninput="checkStrength(this.value)" onkeyup="updateFingerprint(this.value, 'send-fingerprint')" autocomplete="new-password">
                                     <div class="pwd-divider"></div>
                                     <div class="pwd-toggle" onclick="togglePwd('crypto-password', this)">🙈</div>
                                 </div>
                                 
+                                <div id="send-fingerprint" style="text-align: center; font-size: 24px; letter-spacing: 8px; margin: 5px 0; min-height: 36px; filter: drop-shadow(0 0 10px rgba(99, 102, 241, 0.5));"></div>
+
                                 <div class="strength-wrapper">
                                     <div class="strength-track">
                                         <div id="strength-bar-fill"></div>
@@ -507,10 +512,12 @@
         <div id="pass-error-msg"></div>
         
         <div class="pwd-group">
-            <input type="password" id="alert-password-input" placeholder="Type password..." style="text-align: center;">
+            <input type="password" id="alert-password-input" placeholder="Type password..." style="text-align: center;" onkeyup="updateFingerprint(this.value, 'recv-fingerprint')">
             <div class="pwd-divider"></div>
             <div class="pwd-toggle" onclick="togglePwd('alert-password-input', this)">🙈</div>
         </div>
+
+        <div id="recv-fingerprint" style="text-align: center; font-size: 24px; letter-spacing: 8px; margin: 5px 0; min-height: 36px; filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.5));"></div>
 
         <div style="display: flex; gap: 10px; margin-top: 10px;">
             <button class="action-btn" id="btn-pass-confirm" style="flex: 1; padding: 12px; margin:0; background: #f59e0b;">UNLOCK</button>
@@ -540,7 +547,29 @@
         }
     }
 
-    /* --- [多语言配置中心：AI图标已更新为✨，密码提示已优化] --- */
+    /* --- [新增黑科技：可视哈希指纹 (Monkey Hash)] --- */
+    /* 原理：利用 SHA-256 计算密码指纹，映射为 4 个 Emoji，用于在不暴露密码的情况下核对一致性 */
+    async function updateFingerprint(val, elId) {
+        const el = document.getElementById(elId);
+        if (!val) { el.innerText = ""; return; }
+        
+        // 使用 Web Crypto API 进行极速哈希 (无性能损耗)
+        const msgBuffer = new TextEncoder().encode(val);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        
+        // 精选的高辨识度 Emoji 库
+        const emojis = ["⚡","🛡️","🚀","🤖","💎","🔥","🌟","🌊","🐯","🐵","🍎","🍀","🎲","🧩","🔮","🎵","🎩","👻","🌵","🍕","🌙","☀️","🌈","❄️"];
+        
+        let res = "";
+        // 取哈希值的前4个字节进行映射
+        for(let i=0; i<4; i++) {
+            res += emojis[hashArray[i] % emojis.length];
+        }
+        el.innerText = res;
+    }
+
+    /* --- [多语言配置中心] --- */
     const I18N = {
         en: { 
             tag: "EN", 
@@ -950,6 +979,8 @@
             inp.type = "password"; 
             const toggle = modal.querySelector('.pwd-toggle');
             if(toggle) toggle.innerText = "🙈";
+            /* 清空上次的指纹 */
+            document.getElementById('recv-fingerprint').innerText = "";
 
             if (attemptsLeft !== undefined) {
                 errDiv.innerText = `${I18N[currLang].passWrong} ${attemptsLeft} ${I18N[currLang].passRemaining}`;
@@ -1033,6 +1064,7 @@
         pwdInput.type = "password";
         const toggle = document.querySelector('#crypto-modal .pwd-toggle');
         if(toggle) toggle.innerText = "🙈";
+        document.getElementById('send-fingerprint').innerText = "";
         
         document.getElementById('crypto-modal').style.display = 'flex'; 
     }
