@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -16,143 +17,146 @@
       --nav-bg: rgba(15, 23, 42, 0.95);
     }
 
-    * { box-sizing: border-box; }
+```
+* { box-sizing: border-box; }
 
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      margin: 0;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.7;
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
 
-    .stars-container {
-      position: fixed;
-      inset: 0;
-      z-index: -1;
-      background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
-      pointer-events: none;
-    }
+.stars-container {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+  pointer-events: none;
+}
 
-    .star {
-      position: absolute;
-      background: white;
-      border-radius: 50%;
-      opacity: 0.5;
-      animation: moveStars linear infinite;
-    }
+.star {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  opacity: 0.5;
+  animation: moveStars linear infinite;
+}
 
-    @keyframes moveStars {
-      from { transform: translateY(0); }
-      to { transform: translateY(-1000px); }
-    }
+@keyframes moveStars {
+  from { transform: translateY(0); }
+  to { transform: translateY(-1000px); }
+}
 
-    header {
-      position: sticky;
-      top: 0;
-      background: var(--nav-bg);
-      border-bottom: 1px solid var(--border);
-      padding: 15px 25px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      backdrop-filter: blur(20px);
-      z-index: 100;
-    }
+header {
+  position: sticky;
+  top: 0;
+  background: var(--nav-bg);
+  border-bottom: 1px solid var(--border);
+  padding: 15px 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  backdrop-filter: blur(20px);
+  z-index: 100;
+}
 
-    header strong {
-      font-size: 20px;
-      font-weight: 900;
-      color: white;
-    }
+header strong {
+  font-size: 20px;
+  font-weight: 900;
+  color: white;
+}
 
-    header strong span { color: var(--primary); }
+header strong span { color: var(--primary); }
 
-    select {
-      background: rgba(15, 23, 42, 0.8);
-      color: white;
-      border: 1.5px solid var(--border);
-      padding: 8px 12px;
-      border-radius: 10px;
-      font-weight: 800;
-    }
+select {
+  background: rgba(15, 23, 42, 0.8);
+  color: white;
+  border: 1.5px solid var(--border);
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-weight: 800;
+}
 
-    main {
-      max-width: 900px;
-      margin: 40px auto;
-      padding: 0 20px 80px;
-    }
+main {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 0 20px 80px;
+}
 
-    .privacy-card {
-      background: var(--card);
-      padding: 40px;
-      border-radius: 30px;
-      backdrop-filter: blur(25px);
-      border: 1px solid rgba(255,255,255,0.1);
-      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.9);
-    }
+.privacy-card {
+  background: var(--card);
+  padding: 40px;
+  border-radius: 30px;
+  backdrop-filter: blur(25px);
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 25px 50px -12px rgba(0,0,0,0.9);
+}
 
-    h1 {
-      color: var(--primary);
-      font-size: 36px;
-      margin-top: 0;
-      font-weight: 900;
-      border-bottom: 2px solid var(--border);
-      display: inline-block;
-      padding-bottom: 10px;
-      margin-bottom: 30px;
-    }
+h1 {
+  color: var(--primary);
+  font-size: 36px;
+  margin-top: 0;
+  font-weight: 900;
+  border-bottom: 2px solid var(--border);
+  display: inline-block;
+  padding-bottom: 10px;
+  margin-bottom: 30px;
+}
 
-    h2 {
-      margin-top: 30px;
-      font-size: 22px;
-      color: #a5b4fc;
-      font-weight: 800;
-    }
+h2 {
+  margin-top: 30px;
+  font-size: 22px;
+  color: #a5b4fc;
+  font-weight: 800;
+}
 
-    p {
-      color: var(--text-muted);
-      font-size: 15px;
-    }
+p {
+  color: var(--text-muted);
+  font-size: 15px;
+}
 
-    ul { list-style: none; padding-left: 0; }
-    li {
-      margin: 10px 0;
-      padding-left: 22px;
-      position: relative;
-    }
-    li::before {
-      content: "⚡";
-      position: absolute;
-      left: 0;
-      color: var(--primary);
-    }
+ul { list-style: none; padding-left: 0; }
+li {
+  margin: 10px 0;
+  padding-left: 22px;
+  position: relative;
+}
+li::before {
+  content: "⚡";
+  position: absolute;
+  left: 0;
+  color: var(--primary);
+}
 
-    .lang { display: none; animation: fadeIn .4s ease; }
-    .lang.active { display: block; }
+.lang { display: none; animation: fadeIn .4s ease; }
+.lang.active { display: block; }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: none; }
-    }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
 
-    .back-btn {
-      display: inline-block;
-      margin-bottom: 20px;
-      color: var(--primary);
-      font-weight: 800;
-      text-decoration: none;
-    }
+.back-btn {
+  display: inline-block;
+  margin-bottom: 20px;
+  color: var(--primary);
+  font-weight: 800;
+  text-decoration: none;
+}
 
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 30px 20px;
-      text-align: center;
-      font-size: 13px;
-      color: var(--text-muted);
-    }
+footer {
+  border-top: 1px solid var(--border);
+  padding: 30px 20px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+```
+
   </style>
 </head>
 
@@ -176,6 +180,8 @@
 <a href="index.html" class="back-btn">← Back to Workspace</a>
 
 <div class="privacy-card">
+
+<!-- EN -->
 
 <section class="lang active" id="en">
 <h1>Privacy & Security Policy</h1>
@@ -211,42 +217,208 @@
 </ul>
 <p>Even with encryption enabled, FlashDrop Pro cannot access encrypted content.</p>
 
-<p><strong>Responsibility Notice:</strong> FlashDrop Pro provides a neutral peer-to-peer communication tool. Users are solely responsible for how they use this service and for complying with all applicable laws and regulations. FlashDrop Pro does not monitor, control, or have access to user-transferred content.</p>
+<h2>6. Responsible Use Notice</h2>
+<p>This service must not be used for any illegal activities, including but not limited to piracy, hacking, or distribution of illegal content. Users are solely responsible for their actions.</p>
 </section>
+
+<!-- 中文 -->
 
 <section class="lang" id="zh">
 <h1>隐私与安全说明</h1>
 <p>FlashDrop Pro 的唯一原则是：<strong>你的数据永远不属于我们</strong>。</p>
 
-<p><strong>责任声明：</strong>FlashDrop Pro 仅提供中立的点对点通信工具。用户需自行对其使用行为负责，并遵守所有适用的法律法规。我们不会监控、控制或访问用户传输的内容。</p>
+<h2>1. 纯 P2P 架构</h2>
+<ul>
+  <li>基于 WebRTC 的浏览器直连传输</li>
+  <li>无云端存储、无中间服务器</li>
+  <li>页面关闭后数据自动销毁</li>
+</ul>
+
+<h2>2. 零服务器存储</h2>
+<ul>
+  <li>不存储文件或文本内容</li>
+  <li>不保留任何传输记录或元数据</li>
+</ul>
+
+<h2>3. 零日志政策</h2>
+<ul>
+  <li>不记录 IP 或用户身份</li>
+  <li>不记录文件名、大小或时间</li>
+</ul>
+
+<h2>4. 会话自毁机制</h2>
+<p>会话为临时存在，达到限制或关闭后即自动销毁。</p>
+
+<h2>5. 可选的 AES-256 客户端加密</h2>
+<ul>
+  <li>加密在发送方浏览器本地完成</li>
+  <li>密码不会被传输或存储</li>
+  <li>没有正确密码无法解密内容</li>
+</ul>
+<p>即使启用加密，FlashDrop Pro 也无法访问数据。</p>
+
+<h2>6. 责任使用声明</h2>
+<p>本服务不得用于任何非法活动，包括但不限于盗版、黑客攻击或非法内容分发。用户需对自己的行为负责。</p>
 </section>
+
+<!-- JA -->
 
 <section class="lang" id="ja">
 <h1>プライバシーとセキュリティ</h1>
 <p>FlashDrop Pro は「データはユーザー自身のもの」という原則で設計されています。</p>
 
-<p><strong>責任に関する通知：</strong>FlashDrop Pro は中立的な P2P 通信ツールを提供するのみです。利用者は自身の行為および関連法令の遵守について全責任を負います。当サービスは送信内容を監視・管理・取得することはありません。</p>
+<h2>1. P2P アーキテクチャ</h2>
+<ul>
+  <li>WebRTC によるブラウザ間直接転送</li>
+  <li>クラウド保存なし</li>
+  <li>タブを閉じるとデータは破棄</li>
+</ul>
+
+<h2>2. ゼロサーバー保存</h2>
+<ul>
+  <li>ファイルやテキスト内容を保存しない</li>
+  <li>メタデータや転送履歴も保存しない</li>
+</ul>
+
+<h2>3. ログゼロポリシー</h2>
+<ul>
+  <li>IP アドレスやユーザー識別情報は記録しない</li>
+  <li>ファイル名、サイズ、タイムスタンプも記録しない</li>
+</ul>
+
+<h2>4. エンドツーエンドセッション管理</h2>
+<p>セッションは一時的で、アクセス制限到達または手動で閉じた時に自動消去されます。</p>
+
+<h2>5. 任意のクライアントサイド AES-256 暗号化</h2>
+<ul>
+  <li>暗号化は送信者のブラウザで実行</li>
+  <li>パスワードは送信または保存されない</li>
+  <li>正しいパスワードなしでは復号できない</li>
+</ul>
+<p>暗号化を有効にしても、FlashDrop Pro はデータにアクセスできません。</p>
+
+<h2>6. 責任ある利用の注意</h2>
+<p>本サービスは違法行為に使用してはなりません。違法コンテンツの配布、ハッキング、海賊行為などを含みます。ユーザー自身が行為に責任を負います。</p>
 </section>
+
+<!-- KO -->
 
 <section class="lang" id="ko">
 <h1>개인정보 및 보안</h1>
-<p>FlashDrop Pro는 사용자의 데이터 소유권을 존중합니다.</p>
+<p>FlashDrop Pro는 사용자의 데이터 소유권을 존중합니다。</p>
 
-<p><strong>책임 안내:</strong> FlashDrop Pro는 중립적인 P2P 통신 도구를 제공합니다. 사용자는 서비스 이용 방식과 관련 법률 준수에 대한 모든 책임을 집니다. 당사는 전송된 콘텐츠를 모니터링하거나 접근하지 않습니다.</p>
+<h2>1. P2P 구조</h2>
+<ul>
+  <li>브라우저 간 직접 전송</li>
+  <li>서버 저장 없음</li>
+  <li>세션 종료 시 자동 삭제</li>
+</ul>
+
+<h2>2. 서버 저장소 없음</h2>
+<ul>
+  <li>파일 또는 텍스트 콘텐츠를 저장하지 않음</li>
+  <li>메타데이터나 전송 기록도 저장하지 않음</li>
+</ul>
+
+<h2>3. 로그 없음</h2>
+<ul>
+  <li>IP 또는 사용자 식별 정보 기록 없음</li>
+  <li>파일 이름, 크기, 타임스탬프 기록 없음</li>
+</ul>
+
+<h2>4. 세션 제어</h2>
+<p>세션은 일시적이며, 접근 제한 도달 시 또는 수동 종료 시 자동 삭제됩니다.</p>
+
+<h2>5. 선택적 AES-256 클라이언트 암호화</h2>
+<ul>
+  <li>암호화는 발신자 브라우저에서 수행</li>
+  <li>비밀번호는 전송되거나 저장되지 않음</li>
+  <li>올바른 비밀번호 없이는 복호화 불가</li>
+</ul>
+<p>암호화를 사용해도 FlashDrop Pro는 데이터에 접근할 수 없습니다。</p>
+
+<h2>6. 책임 있는 사용 알림</h2>
+<p>이 서비스는 불법 활동에 사용할 수 없습니다. 불법 콘텐츠 배포, 해킹, 해적 행위 등을 포함하며, 사용자는 자신의 행위에 대해 전적으로 책임집니다。</p>
 </section>
+
+<!-- ES -->
 
 <section class="lang" id="es">
 <h1>Privacidad y Seguridad</h1>
 <p>Sus datos siempre son suyos.</p>
 
-<p><strong>Aviso de responsabilidad:</strong> FlashDrop Pro ofrece una herramienta de comunicación P2P neutral. Los usuarios son responsables de su uso y del cumplimiento de todas las leyes aplicables. FlashDrop Pro no supervisa ni accede al contenido transferido.</p>
+<h2>1. Arquitectura P2P pura</h2>
+<ul>
+  <li>Transferencia directa navegador a navegador mediante WebRTC</li>
+  <li>No hay almacenamiento en la nube ni intermediarios</li>
+  <li>Todos los datos de sesión se destruyen al cerrar la pestaña</li>
+</ul>
+
+<h2>2. Cero almacenamiento en servidor</h2>
+<ul>
+  <li>No se almacenan archivos ni contenido de texto</li>
+  <li>No se guardan metadatos ni historial de transferencias</li>
+</ul>
+
+<h2>3. Política de cero registros</h2>
+<ul>
+  <li>No se registran direcciones IP ni identificadores de usuario</li>
+  <li>No se registran nombres de archivos, tamaños ni timestamps</li>
+</ul>
+
+<h2>4. Control de sesión de extremo a extremo</h2>
+<p>Las sesiones son temporales y se autodestruyen cuando se alcanza el límite de acceso o se cierran manualmente.</p>
+
+<h2>5. Cifrado AES-256 opcional del lado del cliente</h2>
+<ul>
+  <li>El cifrado se realiza localmente en el navegador del remitente</li>
+  <li>La contraseña nunca se transmite ni almacena</li>
+  <li>Sin la contraseña correcta, los datos no pueden descifrarse</li>
+</ul>
+<p>Incluso con el cifrado activado, FlashDrop Pro no puede acceder al contenido cifrado.</p>
+
+<h2>6. Aviso de uso responsable</h2>
+<p>Este servicio no debe usarse para actividades ilegales, incluyendo pero no limitado a piratería, hacking o distribución de contenido ilegal. Los usuarios son totalmente responsables de sus acciones.</p>
 </section>
+
+<!-- HI -->
 
 <section class="lang" id="hi">
 <h1>गोपनीयता और सुरक्षा</h1>
 <p>आपका डेटा पूरी तरह आपके नियंत्रण में रहता है।</p>
 
-<p><strong>जिम्मेदारी सूचना:</strong> FlashDrop Pro एक तटस्थ P2P संचार उपकरण प्रदान करता है। उपयोगकर्ता अपने उपयोग और सभी लागू कानूनों के पालन के लिए स्वयं जिम्मेदार हैं। हम किसी भी सामग्री की निगरानी या उस तक पहुँच नहीं रखते।</p>
+<h2>1. शुद्ध P2P आर्किटेक्चर</h2>
+<ul>
+  <li>ब्राउज़र के बीच सीधे ट्रांसफर (WebRTC)</li>
+  <li>क्लाउड स्टोरेज या मध्यस्थ नहीं</li>
+  <li>टैब बंद होने पर सभी सत्र डेटा नष्ट हो जाता है</li>
+</ul>
+
+<h2>2. ज़ीरो सर्वर स्टोरेज</h2>
+<ul>
+  <li>फ़ाइल या टेक्स्ट सामग्री स्टोर नहीं की जाती</li>
+  <li>मेटाडेटा या ट्रांसफर इतिहास नहीं रखा जाता</li>
+</ul>
+
+<h2>3. ज़ीरो लॉग्स नीति</h2>
+<ul>
+  <li>IP या उपयोगकर्ता पहचान रिकॉर्ड नहीं होती</li>
+  <li>फ़ाइल नाम, आकार या टाइमस्टैम्प रिकॉर्ड नहीं होते</li>
+</ul>
+
+<h2>4. एंड-टू-एंड सत्र नियंत्रण</h2>
+<p>सत्र अस्थायी होते हैं और एक्सेस लिमिट तक पहुँचने पर या मैन्युअल रूप से बंद करने पर स्वचालित रूप से नष्ट हो जाते हैं।</p>
+
+<h2>5. वैकल्पिक क्लाइंट-साइड AES-256 एन्क्रिप्शन</h2>
+<ul>
+  <li>एन्क्रिप्शन भेजने वाले के ब्राउज़र में होता है</li>
+  <li>पासवर्ड कभी ट्रांसमिट या स्टोर नहीं किया जाता</li>
+  <li>सही पासवर्ड के बिना डेटा डिक्रिप्ट नहीं हो सकता</li>
+</ul>
+<p>एन्क्रिप्शन सक्षम होने पर भी, FlashDrop Pro डेटा तक पहुँच नहीं सकता।</p>
+
+<h2>6. जिम्मेदार उपयोग नोटिस</h2>
+<p>इस सेवा का उपयोग किसी भी अवैध गतिविधियों के लिए नहीं किया जाना चाहिए, जैसे पाइरेसी, हैकिंग या अवैध सामग्री का वितरण। उपयोगकर्ता अपने कार्यों के लिए पूरी तरह जिम्मेदार हैं।</p>
 </section>
 
 </div>
