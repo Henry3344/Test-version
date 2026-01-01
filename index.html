@@ -94,15 +94,30 @@
         #stagedList { display: none; background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border); border-radius: 12px; padding: 10px; margin-bottom: 10px; max-height: 120px; overflow-y: auto; }
         .staged-item { display: flex; justify-content: space-between; align-items: center; font-size: 12px; padding: 6px 10px; background: rgba(255,255,255,0.05); border-radius: 8px; margin-bottom: 5px; }
         
-        /* AI Suggestions Styles - 字体调大 */
-        #ai-suggestions { display: none; font-size: 13px; margin-bottom: 8px; background: rgba(139, 92, 246, 0.1); padding: 10px 14px; border-radius: 8px; border-left: 3px solid var(--ai); color: #e9d5ff; text-align: left; }
+        /* AI Suggestions Styles - 优化布局以容纳警告 */
+        #ai-suggestions { display: none; font-size: 13px; margin-bottom: 8px; background: rgba(139, 92, 246, 0.1); padding: 12px 14px; border-radius: 12px; border-left: 3px solid var(--ai); color: #e9d5ff; text-align: left; }
         #ai-tag-container { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
         .ai-smart-tag { font-size: 11px; padding: 3px 8px; border-radius: 6px; background: rgba(139, 92, 246, 0.3); color: white; border: 1px solid rgba(139, 92, 246, 0.4); }
+
+        /* [新增] 隐私警告样式 - 醒目的红色呼吸灯效果 */
+        #ai-privacy-alert {
+            display: none;
+            margin-top: 10px;
+            padding: 8px 10px;
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 8px;
+            color: #fca5a5;
+            font-size: 11px;
+            line-height: 1.5;
+            animation: pulse-red 3s infinite;
+        }
+        @keyframes pulse-red { 0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); } 70% { box-shadow: 0 0 0 5px rgba(239, 68, 68, 0.1); } 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); } }
 
         button.action-btn { background: var(--primary); color: white; border: none; padding: 16px; border-radius: 16px; font-size: 14px; cursor: pointer; width: 100%; font-weight: 800; transition: 0.3s; box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4); margin-top: auto; text-transform: uppercase; }
         button.action-btn:active { transform: scale(0.97); }
 
-        /* [重要] 接收方闪烁动画定义 */
+        /* 接收方闪烁动画 */
         @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
         .blink-warn { animation: blink 1.5s infinite ease-in-out; color: #f59e0b; margin: 0 10px; }
 
@@ -328,12 +343,17 @@
                             </label>
                             
                             <div id="ai-suggestions" style="font-size: 13px;">
-                                <div style="display:flex; justify-content:space-between; align-items:center;">
+                                <div style="display:flex; flex-wrap:wrap; align-items:center; gap:5px; margin-bottom:5px;">
                                     <strong>✨ AI Insights</strong>
-                                    <span style="font-size:9px; opacity:0.7">Local Processing</span>
+                                    <span id="ai-insight-note" style="font-size:10px; opacity:0.6;">(Selected types)</span>
+                                    <span style="font-size:9px; opacity:0.7; margin-left:auto;">Local Processing</span>
                                 </div>
+                                
+                                <div id="ai-privacy-alert"></div>
+                                
                                 <div id="ai-tag-container"></div>
                             </div>
+                            
                             <div id="stagedList"></div>
                             <button class="action-btn" id="btn-share-files" onclick="triggerAd('send-file')">SHARE FILES</button>
                         </div>
@@ -557,12 +577,12 @@
         }
     }
 
-    /* --- [新增黑科技：可视哈希指纹 (Monkey Hash) & 自动显隐] --- */
+    /* --- [黑科技：可视哈希指纹 (Monkey Hash) & 自动显隐] --- */
     async function updateFingerprint(val, elId, hintId) {
         const el = document.getElementById(elId);
         const hint = document.getElementById(hintId);
         
-        // 如果输入为空，隐藏指纹和提示语，保持界面清爽
+        // 智能隐身：无输入时隐藏一切
         if (!val) { 
             el.innerText = ""; 
             el.style.display = 'none';
@@ -570,27 +590,26 @@
             return; 
         }
         
-        // 如果有输入，显示出来
+        // 有输入时显现
         el.style.display = 'block';
         if(hint) hint.style.display = 'block';
         
-        // 使用 Web Crypto API 进行极速哈希 (无性能损耗)
+        // 极速哈希计算
         const msgBuffer = new TextEncoder().encode(val);
         const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
         const hashArray = Array.from(new Uint8Array(hashBuffer));
         
-        // 精选的高辨识度 Emoji 库
+        // 高辨识度 Emoji 库
         const emojis = ["⚡","🛡️","🚀","🤖","💎","🔥","🌟","🌊","🐯","🐵","🍎","🍀","🎲","🧩","🔮","🎵","🎩","👻","🌵","🍕","🌙","☀️","🌈","❄️"];
         
         let res = "";
-        // 取哈希值的前4个字节进行映射
         for(let i=0; i<4; i++) {
             res += emojis[hashArray[i] % emojis.length];
         }
         el.innerText = res;
     }
 
-    /* --- [多语言配置中心：AI图标已更新为✨，密码提示已优化] --- */
+    /* --- [多语言配置中心：含隐私警告 & 括号说明] --- */
     const I18N = {
         en: { 
             tag: "EN", 
@@ -613,14 +632,16 @@
             passWrong: "Wrong Password!", passRemaining: "attempts left",
             passWeak: "For safety: 8+ chars, 1 Upper, 1 Lower, 1 Number, 1 Symbol.",
             
-            /* [英语] 指纹提示语 */
-            hashHintSend: "After setting the AES-256 key, if the receiver's emojis match these, the key is correct!",
-            hashHintRecv: "As long as the entered AES-256 key matches, the emojis will match!",
+            hashHintSend: "Visual Check: If receiver's emojis match these, the key is correct!",
+            hashHintRecv: "Visual Check: If the key matches, the emojis will match!",
+            
+            /* [新增] AI & 隐私相关 */
+            aiNote: "(Selected types)",
+            privWarn: "⚠️ Privacy Alert: Filenames indicate sensitive info (ID/Passport/Address etc.). Highly recommend enabling AES-256 encryption!",
             
             step1: "Select Files<br><span style='font-size:9px; opacity:0.7'>(Type Text)</span>", 
             step2: "Set AES-256<br><span style='font-size:9px; opacity:0.7'>(Option)</span>", 
-            step3: "Get Code", 
-            step4: "Download",
+            step3: "Get Code", step4: "Download",
             
             heroTitle: "Secure File Sharing, Even We Can’t See.",
             heroSub: "Direct P2P transfer. Optional AES-256 encryption. No servers.",
@@ -634,16 +655,15 @@
             aiInsight: "✨ AI Insights", aiLocal: "Local Processing",
             aiTags: { img: "🖼️ Image", vid: "🎬 Video", doc: "📄 Document", code: "💻 Code", zip: "📦 Archive", big: "🐘 Large File" },
             
-            faqQ1: "Do my files pass through your servers?", faqA1: "No. FlashDrop Pro utilizes a serverless P2P architecture powered by WebRTC. Data streams directly between peers.",
-            faqQ2: "Do you retain any logs or metadata?", faqA2: "Absolutely not. We operate on a 'Zero-Knowledge' basis. We do not store IP addresses or file logs.",
+            faqQ1: "Do my files pass through your servers?", faqA1: "No. FlashDrop Pro utilizes a serverless P2P architecture powered by WebRTC.",
+            faqQ2: "Do you retain any logs or metadata?", faqA2: "Absolutely not. We operate on a 'Zero-Knowledge' basis.",
             faqQ3: "What encryption standards are used?", faqA3: "All transfers are secured via WebRTC's DTLS/SRTP. Optional password protection adds AES-256-GCM.",
             faqQ4: "Is my IP address visible?", faqA4: "Due to P2P nature, the recipient needs your IP to connect. Use VPN for anonymity.",
             faqQ5: "Is it safe for confidential documents?", faqA5: "Yes. Data never rests on a third-party server, minimizing attack surface.",
             faqQ6: "Can I recover files after closing tab?", faqA6: "No. Data exists only in RAM. Once closed, it is lost forever.",
             faqQ7: "Can staff access my files?", faqA7: "Impossible. We have no keys and no storage.",
             faqQ8: "Is password mandatory?", faqA8: "Optional, but recommended for sensitive data on local networks.",
-            faqQ9: "Can you reset lost password?", faqA9: "No. We don't store passwords. Data cannot be recovered without it.",
-            
+            faqQ9: "Can you reset lost password?", faqA9: "No. We don't store passwords.",
             techPhrases: ["Generating RSA-4096 Key...", "Initializing WebRTC Handshake...", "Establishing P2P Tunnel...", "Synchronizing Peer Signals...", "Channel Secured!"]
         },
         zh: { 
@@ -667,14 +687,16 @@
             passWrong: "❌ 密码错误！", passRemaining: "次尝试机会。",
             passWeak: "为了安全：至少8位，需包含大写、小写、数字及符号。",
             
-            /* [中文] 指纹提示语 */
             hashHintSend: "AES-256密钥设置好后，只要接收方的emoji与下方的emoji相符即为密钥正确！",
             hashHintRecv: "只要输入的AES-256密钥一致，emoji就会一致！",
 
+            /* [新增] AI & 隐私相关 */
+            aiNote: "(以下是你已选中的文件类型)",
+            privWarn: "⚠️ 隐私提醒：文件名包含敏感信息（身份证/护照/房产证等）。强烈建议开启 AES-256 加密！",
+
             step1: "选文件<br><span style='font-size:9px; opacity:0.7'>(可输文字)</span>", 
             step2: "设密码<br><span style='font-size:9px; opacity:0.7'>(可选加密)</span>", 
-            step3: "取件码", 
-            step4: "下载",
+            step3: "取件码", step4: "下载",
 
             heroTitle: "安全传输，只有天知地知你知。",
             heroSub: "点对点直连。可选 AES-256 加密。不经服务器。",
@@ -697,7 +719,6 @@
             faqQ7: "员工能看文件吗？", faqA7: "不能。我们没密钥也没存储。",
             faqQ8: "必须设密码吗？", faqA8: "可选。但建议局域网内使用时设置。",
             faqQ9: "能重置密码吗？", faqA9: "不能。忘了就真没了。",
-
             techPhrases: ["正在生成 RSA-4096 密钥...", "初始化 WebRTC 握手...", "建立 P2P 加密隧道...", "同步对等信号...", "安全通道已建立!"]
         },
         ja: { 
@@ -720,14 +741,16 @@
             passWrong: "❌ パスワードが違います！", passRemaining: "回試行可能。",
             passWeak: "安全のため：8文字以上、大文字・小文字・数字・記号を含めてください。",
             
-            /* [日语] 指纹提示语 */
             hashHintSend: "AES-256キー設定後、受信側の絵文字と一致していればキーは正しいです！",
             hashHintRecv: "入力したAES-256キーが一致すれば、絵文字も一致します！",
 
+            /* [新增] AI & 隐私相关 */
+            aiNote: "(選択されたファイル形式)",
+            privWarn: "⚠️ プライバシー警告：ファイル名に機密情報（ID/パスポート/住所など）が含まれています。AES-256暗号化を強く推奨します！",
+
             step1: "ファイル選択<br><span style='font-size:9px; opacity:0.7'>(テキスト可)</span>", 
             step2: "暗号化設定<br><span style='font-size:9px; opacity:0.7'>(任意)</span>", 
-            step3: "コード取得", 
-            step4: "ダウンロード",
+            step3: "コード取得", step4: "ダウンロード",
 
             heroTitle: "安全なファイル共有。私たちも見えません。",
             heroSub: "P2P直接転送。AES-256暗号化オプション。サーバーなし。",
@@ -750,7 +773,6 @@
             faqQ7: "運営は見れますか？", faqA7: "不可能です。鍵もデータも持ちません。",
             faqQ8: "パスワードは必須？", faqA8: "任意ですが、推奨します。",
             faqQ9: "リセットできますか？", faqA9: "いいえ。紛失すると復元できません。",
-
             techPhrases: ["RSA鍵を生成中...", "WebRTCハンドシェイク...", "P2Pトンネル確立中...", "信号を同期中...", "安全な接続完了!"]
         },
         ko: { 
@@ -773,14 +795,16 @@
             passWrong: "❌ 비밀번호 오류!", passRemaining: "회 시도 가능.",
             passWeak: "보안을 위해: 8자 이상, 대문자, 소문자, 숫자, 특수문자 포함.",
             
-            /* [韩语] 指纹提示语 */
             hashHintSend: "AES-256 키 설정 후 수신자의 이모티콘과 일치하면 키가 올바른 것입니다!",
             hashHintRecv: "입력한 AES-256 키가 일치하면 이모티콘도 일치합니다!",
+            
+            /* [新增] AI & 隐私相关 */
+            aiNote: "(선택된 파일 유형)",
+            privWarn: "⚠️ 개인정보 경고: 파일명에 민감한 정보(신분증/여권/주소 등)가 포함되어 있습니다. AES-256 암호화를 강력히 권장합니다!",
 
             step1: "파일 선택<br><span style='font-size:9px; opacity:0.7'>(텍스트 가능)</span>", 
             step2: "비번 설정<br><span style='font-size:9px; opacity:0.7'>(선택 사항)</span>", 
-            step3: "코드 받기", 
-            step4: "다운로드",
+            step3: "코드 받기", step4: "다운로드",
 
             heroTitle: "안전한 파일 공유. 서버 저장 없음.",
             heroSub: "직접 P2P 전송. 선택적 AES-256 암호화.",
@@ -803,7 +827,6 @@
             faqQ7: "운영자가 볼 수 있나요?", faqA7: "불가능합니다. 키가 없습니다.",
             faqQ8: "비번은 필수인가요?", faqA8: "선택입니다.",
             faqQ9: "비번 리셋 가능?", faqA9: "불가능합니다.",
-
             techPhrases: ["RSA 키 생성 중...", "WebRTC 연결 중...", "P2P 터널 수립 중...", "동기화 중...", "보안 연결 완료!"]
         },
         es: { 
@@ -826,14 +849,16 @@
             passWrong: "❌ Contraseña incorrecta", passRemaining: "intentos restantes.",
             passWeak: "Seguridad: 8+ caracteres, 1 Mayúscula, 1 Minúscula, 1 Número, 1 Símbolo.",
             
-            /* [西班牙语] 指纹提示语 */
             hashHintSend: "Una vez configurada la clave AES-256, si los emojis coinciden, ¡la clave es correcta!",
             hashHintRecv: "¡Si la clave AES-256 coincide, los emojis también coincidirán!",
 
+            /* [新增] AI & 隐私相关 */
+            aiNote: "(Tipos seleccionados)",
+            privWarn: "⚠️ Alerta de privacidad: Los nombres de archivo indican información confidencial (ID/Pasaporte/Dirección). ¡Se recomienda encarecidamente el cifrado AES-256!",
+
             step1: "Elegir Archivos<br><span style='font-size:9px; opacity:0.7'>(o Texto)</span>", 
             step2: "Cifrado AES<br><span style='font-size:9px; opacity:0.7'>(Opcional)</span>", 
-            step3: "Obtener Código", 
-            step4: "Descargar",
+            step3: "Obtener Código", step4: "Descargar",
 
             heroTitle: "Intercambio seguro. Nadie nos ve.",
             heroSub: "Transferencia P2P directa. Cifrado AES-256 opcional.",
@@ -856,7 +881,6 @@
             faqQ7: "¿El personal lo ve?", faqA7: "Imposible. No tenemos claves.",
             faqQ8: "¿Contraseña obligatoria?", faqA8: "Opcional.",
             faqQ9: "¿Restablecer contraseña?", faqA9: "No. No la guardamos.",
-
             techPhrases: ["Generando Clave RSA...", "Iniciando WebRTC...", "Túnel P2P...", "Sincronizando...", "¡Canal Seguro!"]
         },
         hi: { 
@@ -879,14 +903,16 @@
             passWrong: "❌ गलत पासवर्ड!", passRemaining: "प्रयास शेष।",
             passWeak: "सुरक्षा के लिए: 8+ वर्ण, 1 अपरकेस, 1 लोअरकेस, 1 नंबर, 1 प्रतीक।",
             
-            /* [印地语] 指纹提示语 */
             hashHintSend: "AES-256 कुंजी सेट करने के बाद, यदि इमोजी मेल खाते हैं, तो कुंजी सही है!",
             hashHintRecv: "यदि दर्ज की गई AES-256 कुंजी मेल खाती है, तो इमोजी भी मेल खाएंगे!",
+            
+            /* [新增] AI & 隐私相关 */
+            aiNote: "(चयनित प्रकार)",
+            privWarn: "⚠️ गोपनीयता चेतावनी: फ़ाइल नाम में संवेदनशील जानकारी (आईडी/पासपोर्ट/पता) है। AES-256 एन्क्रिप्शन की अत्यधिक अनुशंसा की जाती है!",
 
             step1: "फ़ाइलें चुनें<br><span style='font-size:9px; opacity:0.7'>(टेक्स्ट लिखें)</span>", 
             step2: "पासवर्ड सेट करें<br><span style='font-size:9px; opacity:0.7'>(वैकल्पिक)</span>", 
-            step3: "कोड प्राप्त करें", 
-            step4: "डाउनलोड",
+            step3: "कोड प्राप्त करें", step4: "डाउनलोड",
 
             heroTitle: "सुरक्षित फ़ाइल शेयरिंग, हम भी नहीं देख सकते।",
             heroSub: "सीधा P2P स्थानांतरण। वैकल्पिक AES-256 एन्क्रिप्शन।",
@@ -909,7 +935,6 @@
             faqQ7: "क्या आप देख सकते हैं?", faqA7: "नहीं। हमारे पास चाबी नहीं है।",
             faqQ8: "क्या पासवर्ड जरूरी है?", faqA8: "वैकल्पिक।",
             faqQ9: "पासवर्ड रीसेट?", faqA9: "नहीं। हम स्टोर नहीं करते।",
-
             techPhrases: ["RSA कुंजी बना रहा है...", "WebRTC शुरू हो रहा है...", "P2P टनल...", "सिंक्रनाइज़ हो रहा है...", "चैनल सुरक्षित!"]
         }
     };
@@ -920,10 +945,14 @@
     const PREFIX = "fd-pro-";
     const CHUNK_SIZE = 64 * 1024; 
 
+    /* --- [AI 引擎升级：隐私敏感词检测] --- */
     const AIEngine = {
         analyze(files) {
             const tags = new Set();
-            if (!files || files.length === 0) return [];
+            let hasPrivacyRisk = false;
+
+            if (!files || files.length === 0) return { tags: [], risk: false };
+
             const exts = {
                 img: ['jpg','jpeg','png','gif','webp','svg','bmp','tiff'],
                 vid: ['mp4','mov','avi','mkv','webm','3gp','m4v'],
@@ -931,31 +960,75 @@
                 code: ['html','css','js','py','c','cpp','json','java','rb','php','sql','go','ts'],
                 zip: ['zip','rar','7z','tar','gz','iso','dmg','pkg']
             };
+
+            // 敏感词库 (多语言混合)
+            const sensitiveKeywords = [
+                'id', 'passport', 'visa', 'resume', 'cv', 'address', 'phone', 'email', 'secret', 'bank', 'statement', 'tax', 'ssn', 'insurance', 'contract',
+                '身份证', '护照', '简历', '住址', '房产', '银行', '账单', '税', '保险', '合同', '指纹', '姓名', '性别', '民族',
+                'パスポート', '住所', '履歴書', '銀行', '여권', '주소', '이력서',
+                'pasaporte', 'dirección', 'banco', 'पता', 'पासपोर्ट', 'बैंक'
+            ];
+
             Array.from(files).forEach(f => {
-                const ext = f.name.split('.').pop().toLowerCase();
+                const name = f.name.toLowerCase();
+                const ext = name.split('.').pop();
+                
+                // 1. 类型分析
                 if(exts.img.includes(ext)) tags.add('img');
                 else if(exts.vid.includes(ext)) tags.add('vid');
                 else if(exts.doc.includes(ext)) tags.add('doc');
                 else if(exts.code.includes(ext)) tags.add('code');
                 else if(exts.zip.includes(ext)) tags.add('zip');
+                
                 if(f.size > 100 * 1024 * 1024) tags.add('big'); 
+
+                // 2. 隐私检测
+                if (!hasPrivacyRisk) {
+                    for (const kw of sensitiveKeywords) {
+                        if (name.includes(kw)) {
+                            hasPrivacyRisk = true;
+                            break;
+                        }
+                    }
+                }
             });
-            return Array.from(tags);
+
+            return { tags: Array.from(tags), risk: hasPrivacyRisk };
         },
-        renderTags(tags) {
+
+        renderTags(data) {
             const container = document.getElementById('ai-tag-container');
             const wrapper = document.getElementById('ai-suggestions');
-            if(tags.length === 0) { wrapper.style.display = 'none'; return; }
+            const alertBox = document.getElementById('ai-privacy-alert');
+
+            // 如果没有标签，隐藏 AI 区域
+            if(data.tags.length === 0) { 
+                wrapper.style.display = 'none'; 
+                return; 
+            }
+            
             wrapper.style.display = 'block';
-            const dict = I18N[currLang].aiTags || I18N['en'].aiTags;
-            container.innerHTML = tags.map(t => `<span class="ai-smart-tag">${dict[t] || t}</span>`).join('');
+            
+            // 渲染隐私警告
+            if (data.risk) {
+                alertBox.style.display = 'block';
+                // 动态获取当前语言的警告语
+                const d = I18N[currLang] || I18N['en'];
+                alertBox.innerText = d.privWarn;
+            } else {
+                alertBox.style.display = 'none';
+            }
+
+            // 渲染标签
+            const dict = (I18N[currLang] || I18N['en']).aiTags;
+            container.innerHTML = data.tags.map(t => `<span class="ai-smart-tag">${dict[t] || t}</span>`).join('');
         }
     };
 
     function applyI18N() {
         const userLang = navigator.language.split('-')[0];
         currLang = I18N[userLang] ? userLang : "en";
-        const d = I18N[currLang];
+        const d = I18N[currLang] || I18N['en']; // Fallback
         const tagEl = document.getElementById('currentLangTag');
         if(tagEl) tagEl.innerText = d.tag;
         
@@ -974,6 +1047,8 @@
             'aes-off-txt': d.aesOff, 'aes-on-txt': d.aesOn, 
             'btn-ruthless-text': d.btnRuthless, 'faq-title': d.faqTitle,
             'pass-input-title': d.passTitle, 'btn-pass-confirm': d.passUnlock, 'btn-pass-cancel': d.passCancel,
+            // [新增] 括号说明更新
+            'ai-insight-note': d.aiNote
         };
         for (const [id, text] of Object.entries(map)) {
             const el = document.getElementById(id);
@@ -984,7 +1059,7 @@
         }
         document.getElementById('alert-password-input').placeholder = d.passPlaceholder;
         
-        // 更新指纹提示语（如果当前显示了）
+        // 更新指纹提示语
         const sendHint = document.getElementById('send-hash-hint');
         if(sendHint) sendHint.innerText = d.hashHintSend || "";
         
@@ -1019,7 +1094,6 @@
             inp.type = "password"; 
             const toggle = modal.querySelector('.pwd-toggle');
             if(toggle) toggle.innerText = "🙈";
-            
             /* 清空并隐藏上次的指纹 */
             document.getElementById('recv-fingerprint').innerText = "";
             document.getElementById('recv-fingerprint').style.display = 'none';
@@ -1107,7 +1181,6 @@
         pwdInput.type = "password";
         const toggle = document.querySelector('#crypto-modal .pwd-toggle');
         if(toggle) toggle.innerText = "🙈";
-        /* 清空并隐藏指纹 */
         document.getElementById('send-fingerprint').innerText = "";
         document.getElementById('send-fingerprint').style.display = 'none';
         document.getElementById('send-hash-hint').style.display = 'none';
@@ -1150,7 +1223,7 @@
         if (stagedFiles.length === 0) {
             list.style.display = 'none';
             document.getElementById('file-count-badge').style.display = 'none';
-            AIEngine.renderTags([]); 
+            AIEngine.renderTags([]); // 清空 AI 分析
         } else {
             list.style.display = 'block';
             const badge = document.getElementById('file-count-badge');
@@ -1159,8 +1232,10 @@
             list.innerHTML = stagedFiles.map((f, i) => 
                 `<div class="staged-item"><span>${getFileIcon(f.name)} ${f.name.length > 15 ? f.name.substring(0,12)+'...' : f.name}</span><span style="color:var(--danger); cursor:pointer; font-weight:bold; padding:0 5px;" onclick="stagedFiles.splice(${i},1);renderStagedList()">✕</span></div>`
             ).join('');
-            const aiTags = AIEngine.analyze(stagedFiles);
-            AIEngine.renderTags(aiTags);
+            
+            // [新增] 触发 AI 引擎进行分析（包括隐私检测）
+            const aiData = AIEngine.analyze(stagedFiles);
+            AIEngine.renderTags(aiData);
         }
     }
 
