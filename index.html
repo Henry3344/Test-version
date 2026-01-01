@@ -7,7 +7,6 @@
 <meta name="description" content="Secure P2P file transfer with optional AES-256 encryption. No servers, no logs, no limits.">
 <meta name="keywords" content="P2P transfer, encrypted file sharing, WebRTC, privacy first, file drop">
 
-<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://unpkg.com https://cdn.jsdelivr.net https://www.highperformanceformat.com blob: data:; img-src 'self' data: blob:; media-src 'self' blob: data:; connect-src *; frame-src 'self' https://www.highperformanceformat.com;">
 <meta name="referrer" content="no-referrer">
 
 <meta property="og:title" content="FlashDrop Pro — Secure P2P Workspace">
@@ -102,6 +101,10 @@
 
         button.action-btn { background: var(--primary); color: white; border: none; padding: 16px; border-radius: 16px; font-size: 14px; cursor: pointer; width: 100%; font-weight: 800; transition: 0.3s; box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4); margin-top: auto; text-transform: uppercase; }
         button.action-btn:active { transform: scale(0.97); }
+
+        /* [重要] 接收方闪烁动画定义 */
+        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
+        .blink-warn { animation: blink 1.5s infinite ease-in-out; color: #f59e0b; margin: 0 10px; }
 
         .nerd-stats { display: flex; justify-content: space-between; font-size: 11px; color: var(--success); font-family: monospace; font-weight: 900; margin-bottom: 10px; align-items: center; }
         #receivedText-container { display: none; margin-top: 20px; width:100%; }
@@ -362,14 +365,16 @@
                                 
                                 <div class="pwd-group">
                                     <input type="password" id="crypto-password" placeholder="Type a strong password..." 
-                                           oninput="checkStrength(this.value)" onkeyup="updateFingerprint(this.value, 'send-fingerprint')" autocomplete="new-password">
+                                           oninput="checkStrength(this.value)" 
+                                           onkeyup="updateFingerprint(this.value, 'send-fingerprint', 'send-hash-hint')" 
+                                           autocomplete="new-password">
                                     <div class="pwd-divider"></div>
                                     <div class="pwd-toggle" onclick="togglePwd('crypto-password', this)">🙈</div>
                                 </div>
                                 
-                                <p id="send-hash-hint" style="font-size:10px; color:#94a3b8; margin: 8px 0 2px 0; text-align:center; line-height:1.4; opacity:0.8;"></p>
+                                <p id="send-hash-hint" style="display:none; font-size:10px; color:#94a3b8; margin: 8px 0 2px 0; text-align:center; line-height:1.4; opacity:0.8;"></p>
                                 
-                                <div id="send-fingerprint" style="text-align: center; font-size: 24px; letter-spacing: 8px; margin: 5px 0; min-height: 36px; filter: drop-shadow(0 0 10px rgba(99, 102, 241, 0.5));"></div>
+                                <div id="send-fingerprint" style="display:none; text-align: center; font-size: 24px; letter-spacing: 8px; margin: 5px 0; min-height: 36px; filter: drop-shadow(0 0 10px rgba(99, 102, 241, 0.5));"></div>
 
                                 <div class="strength-wrapper">
                                     <div class="strength-track">
@@ -514,14 +519,15 @@
         <div id="pass-error-msg"></div>
         
         <div class="pwd-group">
-            <input type="password" id="alert-password-input" placeholder="Type password..." style="text-align: center;" onkeyup="updateFingerprint(this.value, 'recv-fingerprint')">
+            <input type="password" id="alert-password-input" placeholder="Type password..." style="text-align: center;" 
+                   onkeyup="updateFingerprint(this.value, 'recv-fingerprint', 'recv-hash-hint')">
             <div class="pwd-divider"></div>
             <div class="pwd-toggle" onclick="togglePwd('alert-password-input', this)">🙈</div>
         </div>
 
-        <p id="recv-hash-hint" style="font-size:10px; color:#94a3b8; margin: 8px 0 2px 0; text-align:center; line-height:1.4; opacity:0.8;"></p>
+        <p id="recv-hash-hint" style="display:none; font-size:10px; color:#94a3b8; margin: 8px 0 2px 0; text-align:center; line-height:1.4; opacity:0.8;"></p>
 
-        <div id="recv-fingerprint" style="text-align: center; font-size: 24px; letter-spacing: 8px; margin: 5px 0; min-height: 36px; filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.5));"></div>
+        <div id="recv-fingerprint" style="display:none; text-align: center; font-size: 24px; letter-spacing: 8px; margin: 5px 0; min-height: 36px; filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.5));"></div>
 
         <div style="display: flex; gap: 10px; margin-top: 10px;">
             <button class="action-btn" id="btn-pass-confirm" style="flex: 1; padding: 12px; margin:0; background: #f59e0b;">UNLOCK</button>
@@ -551,11 +557,22 @@
         }
     }
 
-    /* --- [新增黑科技：可视哈希指纹 (Monkey Hash)] --- */
-    /* 原理：利用 SHA-256 计算密码指纹，映射为 4 个 Emoji，用于在不暴露密码的情况下核对一致性 */
-    async function updateFingerprint(val, elId) {
+    /* --- [新增黑科技：可视哈希指纹 (Monkey Hash) & 自动显隐] --- */
+    async function updateFingerprint(val, elId, hintId) {
         const el = document.getElementById(elId);
-        if (!val) { el.innerText = ""; return; }
+        const hint = document.getElementById(hintId);
+        
+        // 如果输入为空，隐藏指纹和提示语，保持界面清爽
+        if (!val) { 
+            el.innerText = ""; 
+            el.style.display = 'none';
+            if(hint) hint.style.display = 'none';
+            return; 
+        }
+        
+        // 如果有输入，显示出来
+        el.style.display = 'block';
+        if(hint) hint.style.display = 'block';
         
         // 使用 Web Crypto API 进行极速哈希 (无性能损耗)
         const msgBuffer = new TextEncoder().encode(val);
@@ -596,9 +613,9 @@
             passWrong: "Wrong Password!", passRemaining: "attempts left",
             passWeak: "For safety: 8+ chars, 1 Upper, 1 Lower, 1 Number, 1 Symbol.",
             
-            /* [新增] 指纹提示语 - 英语 */
-            hashHintSend: "Visual Check: If receiver's emojis match these, the key is correct!",
-            hashHintRecv: "Visual Check: If the key matches, the emojis will match!",
+            /* [英语] 指纹提示语 */
+            hashHintSend: "After setting the AES-256 key, if the receiver's emojis match these, the key is correct!",
+            hashHintRecv: "As long as the entered AES-256 key matches, the emojis will match!",
             
             step1: "Select Files<br><span style='font-size:9px; opacity:0.7'>(Type Text)</span>", 
             step2: "Set AES-256<br><span style='font-size:9px; opacity:0.7'>(Option)</span>", 
@@ -650,7 +667,7 @@
             passWrong: "❌ 密码错误！", passRemaining: "次尝试机会。",
             passWeak: "为了安全：至少8位，需包含大写、小写、数字及符号。",
             
-            /* [新增] 指纹提示语 - 中文 */
+            /* [中文] 指纹提示语 */
             hashHintSend: "AES-256密钥设置好后，只要接收方的emoji与下方的emoji相符即为密钥正确！",
             hashHintRecv: "只要输入的AES-256密钥一致，emoji就会一致！",
 
@@ -703,9 +720,9 @@
             passWrong: "❌ パスワードが違います！", passRemaining: "回試行可能。",
             passWeak: "安全のため：8文字以上、大文字・小文字・数字・記号を含めてください。",
             
-            /* [新增] 指纹提示语 - 日语 */
-            hashHintSend: "設定後、受信側の絵文字と一致していればキーは正しいです！",
-            hashHintRecv: "入力したキーが一致すれば、絵文字も一致します！",
+            /* [日语] 指纹提示语 */
+            hashHintSend: "AES-256キー設定後、受信側の絵文字と一致していればキーは正しいです！",
+            hashHintRecv: "入力したAES-256キーが一致すれば、絵文字も一致します！",
 
             step1: "ファイル選択<br><span style='font-size:9px; opacity:0.7'>(テキスト可)</span>", 
             step2: "暗号化設定<br><span style='font-size:9px; opacity:0.7'>(任意)</span>", 
@@ -756,9 +773,9 @@
             passWrong: "❌ 비밀번호 오류!", passRemaining: "회 시도 가능.",
             passWeak: "보안을 위해: 8자 이상, 대문자, 소문자, 숫자, 특수문자 포함.",
             
-            /* [新增] 指纹提示语 - 韩语 */
-            hashHintSend: "설정 후 수신자의 이모티콘과 일치하면 키가 올바른 것입니다!",
-            hashHintRecv: "입력한 키가 일치하면 이모티콘도 일치합니다!",
+            /* [韩语] 指纹提示语 */
+            hashHintSend: "AES-256 키 설정 후 수신자의 이모티콘과 일치하면 키가 올바른 것입니다!",
+            hashHintRecv: "입력한 AES-256 키가 일치하면 이모티콘도 일치합니다!",
 
             step1: "파일 선택<br><span style='font-size:9px; opacity:0.7'>(텍스트 가능)</span>", 
             step2: "비번 설정<br><span style='font-size:9px; opacity:0.7'>(선택 사항)</span>", 
@@ -809,9 +826,9 @@
             passWrong: "❌ Contraseña incorrecta", passRemaining: "intentos restantes.",
             passWeak: "Seguridad: 8+ caracteres, 1 Mayúscula, 1 Minúscula, 1 Número, 1 Símbolo.",
             
-            /* [新增] 指纹提示语 - 西班牙语 */
-            hashHintSend: "¡Si los emojis coinciden con los del receptor, la clave es correcta!",
-            hashHintRecv: "¡Si la clave coincide, los emojis también coincidirán!",
+            /* [西班牙语] 指纹提示语 */
+            hashHintSend: "Una vez configurada la clave AES-256, si los emojis coinciden, ¡la clave es correcta!",
+            hashHintRecv: "¡Si la clave AES-256 coincide, los emojis también coincidirán!",
 
             step1: "Elegir Archivos<br><span style='font-size:9px; opacity:0.7'>(o Texto)</span>", 
             step2: "Cifrado AES<br><span style='font-size:9px; opacity:0.7'>(Opcional)</span>", 
@@ -862,9 +879,9 @@
             passWrong: "❌ गलत पासवर्ड!", passRemaining: "प्रयास शेष।",
             passWeak: "सुरक्षा के लिए: 8+ वर्ण, 1 अपरकेस, 1 लोअरकेस, 1 नंबर, 1 प्रतीक।",
             
-            /* [新增] 指纹提示语 - 印地语 */
-            hashHintSend: "यदि नीचे दिए गए इमोजी प्राप्तकर्ता से मेल खाते हैं, तो कुंजी सही है!",
-            hashHintRecv: "यदि दर्ज की गई कुंजी मेल खाती है, तो इमोजी भी मेल खाएंगे!",
+            /* [印地语] 指纹提示语 */
+            hashHintSend: "AES-256 कुंजी सेट करने के बाद, यदि इमोजी मेल खाते हैं, तो कुंजी सही है!",
+            hashHintRecv: "यदि दर्ज की गई AES-256 कुंजी मेल खाती है, तो इमोजी भी मेल खाएंगे!",
 
             step1: "फ़ाइलें चुनें<br><span style='font-size:9px; opacity:0.7'>(टेक्स्ट लिखें)</span>", 
             step2: "पासवर्ड सेट करें<br><span style='font-size:9px; opacity:0.7'>(वैकल्पिक)</span>", 
@@ -967,7 +984,7 @@
         }
         document.getElementById('alert-password-input').placeholder = d.passPlaceholder;
         
-        // [新增] 更新指纹提示语
+        // 更新指纹提示语（如果当前显示了）
         const sendHint = document.getElementById('send-hash-hint');
         if(sendHint) sendHint.innerText = d.hashHintSend || "";
         
@@ -1002,8 +1019,11 @@
             inp.type = "password"; 
             const toggle = modal.querySelector('.pwd-toggle');
             if(toggle) toggle.innerText = "🙈";
-            /* 清空上次的指纹 */
+            
+            /* 清空并隐藏上次的指纹 */
             document.getElementById('recv-fingerprint').innerText = "";
+            document.getElementById('recv-fingerprint').style.display = 'none';
+            document.getElementById('recv-hash-hint').style.display = 'none';
 
             if (attemptsLeft !== undefined) {
                 errDiv.innerText = `${I18N[currLang].passWrong} ${attemptsLeft} ${I18N[currLang].passRemaining}`;
@@ -1087,7 +1107,10 @@
         pwdInput.type = "password";
         const toggle = document.querySelector('#crypto-modal .pwd-toggle');
         if(toggle) toggle.innerText = "🙈";
+        /* 清空并隐藏指纹 */
         document.getElementById('send-fingerprint').innerText = "";
+        document.getElementById('send-fingerprint').style.display = 'none';
+        document.getElementById('send-hash-hint').style.display = 'none';
         
         document.getElementById('crypto-modal').style.display = 'flex'; 
     }
