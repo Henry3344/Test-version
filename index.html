@@ -69,11 +69,11 @@
         .ad-bottom { min-height: 0; margin-top: 20px; margin-bottom: 25px; }
         @media (max-width: 880px) { .ad-side { display: none !important; } }
         
-        /* --- [新增] Hero 区域样式 --- */
+        /* --- Hero 区域样式 --- */
         .hero-bullets { display: flex; gap: 10px; justify-content: center; margin-top: 15px; flex-wrap: wrap; }
         .hero-bullets span { background: rgba(99, 102, 241, 0.15); padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: 800; color: #c7d2fe; border: 1px solid rgba(99, 102, 241, 0.3); white-space: nowrap; box-shadow: 0 0 10px rgba(99, 102, 241, 0.1); }
 
-        /* --- [新增] 安全特性网格样式 --- */
+        /* --- 安全特性网格样式 --- */
         .security-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; margin: 30px 0; width: 100%; }
         .sec-card { background: rgba(30, 41, 59, 0.4); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; padding: 20px; text-align: left; transition: 0.3s; }
         .sec-card:hover { border-color: var(--primary); background: rgba(30, 41, 59, 0.7); }
@@ -148,11 +148,10 @@
         
         #btn-share-text { margin-top: 0; flex: 1; }
 
-        /* [复用] 隐私警告样式 (同时用于 AI Files 和 Text) */
+        /* [复用与增强] 隐私警告样式 */
         #ai-privacy-alert, #text-privacy-alert {
             display: none;
             margin-top: 10px;
-            /* 移除底下的 margin，因为它现在在容器里了 */
             padding: 10px 12px;
             background: rgba(239, 68, 68, 0.15);
             border: 1px solid rgba(239, 68, 68, 0.4);
@@ -170,7 +169,6 @@
         button.action-btn { background: var(--primary); color: white; border: none; padding: 16px; border-radius: 16px; font-size: 14px; cursor: pointer; width: 100%; font-weight: 800; transition: 0.3s; box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4); margin-top: auto; text-transform: uppercase; }
         button.action-btn:active { transform: scale(0.97); }
 
-        /* 接收方闪烁动画 */
         @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
         .blink-warn { animation: blink 1.5s infinite ease-in-out; color: #f59e0b; margin: 0 10px; }
 
@@ -201,9 +199,36 @@
         .pwd-toggle { padding: 0 15px; font-size: 20px; cursor: pointer; user-select: none; transition: transform 0.2s; filter: drop-shadow(0 0 5px rgba(0,0,0,0.5)); }
         .pwd-toggle:active { transform: scale(0.9); }
 
-        .faq-container { max-width: 600px; margin: 40px auto; padding: 0 20px; text-align: left; }
-        .faq-container h3 { font-size: 16px; color: var(--primary); margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; }
-        details { background: rgba(30, 41, 59, 0.4); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; margin-bottom: 10px; padding: 12px 15px; transition: 0.3s; }
+        /* [修改] FAQ 容器：默认移动端竖排，PC端双列 */
+        .faq-container { 
+            max-width: 1000px; /* 增大宽度以容纳双列 */
+            margin: 40px auto; 
+            padding: 0 20px; 
+            text-align: left; 
+            display: grid;
+            grid-template-columns: 1fr; /* 默认单列 (移动端) */
+            gap: 15px;
+        }
+        
+        .faq-container h3 { 
+            font-size: 16px; 
+            color: var(--primary); 
+            margin-bottom: 20px; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+            grid-column: 1 / -1; /* 标题横跨所有列 */
+            text-align: center; /* 标题居中更美观 */
+        }
+
+        /* PC端 Media Query (>768px) */
+        @media (min-width: 768px) {
+            .faq-container {
+                grid-template-columns: 1fr 1fr; /* 变为双列 */
+                align-items: start; /* 顶部对齐 */
+            }
+        }
+
+        details { background: rgba(30, 41, 59, 0.4); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; margin-bottom: 0; /* Grid gap handles spacing */ padding: 12px 15px; transition: 0.3s; }
         details[open] { border-color: var(--primary); background: rgba(99, 102, 241, 0.1); }
         summary { font-size: 14px; font-weight: 800; color: white; cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; }
         summary::after { content: '+'; color: var(--primary); font-size: 18px; transition: 0.3s; }
