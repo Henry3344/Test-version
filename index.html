@@ -1251,11 +1251,10 @@
     }
     function updateLockUI() { document.getElementById('protection-toggle-input').checked = isEncrypted; }
     
-    // [Bug 修复核心] 添加文件后，重置 Input 的 value，允许重复选择同一文件
+    // [Bug 修复] 添加文件后，重置 Input 的 value
     function handleFiles(files) { 
         stagedFiles = stagedFiles.concat(Array.from(files)); 
         renderStagedList();
-        // 这里的修复：清空文件选择器
         document.getElementById('fileInput').value = ''; 
     }
 
@@ -1322,6 +1321,20 @@
         type();
     }
 
+    /* [新增] 检查 URL 参数并自动切换到接收模式 */
+    function checkUrlCode() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get('c');
+        if (code) {
+            // 切换到 Receive 标签页
+            document.getElementById('tab-receive').click();
+            // 自动填充验证码
+            document.getElementById('targetCode').value = code;
+            // 可选：清理 URL，让看着更舒服，或者保留方便刷新
+            // window.history.replaceState({}, document.title, window.location.pathname);
+        }
+    }
+
     async function initSender() {
         if(peer) peer.destroy(); currentDownloads = 0; const code = Math.floor(100000 + Math.random() * 900000);
         peer = new Peer(PREFIX + code);
@@ -1332,6 +1345,15 @@
             const area = document.getElementById('senderCodeArea'); if (area) { area.style.display = 'block'; setTimeout(() => { area.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 200); }
             document.getElementById('myCode').innerText = code; document.getElementById('qrcode').innerHTML = ""; 
             new QRCode(document.getElementById('qrcode'), { text: window.location.origin + window.location.pathname + "?c=" + code, width: 140, height: 140 });
+            
+            /* [新增] COPY LINK 按钮逻辑：生成带验证码的链接 */
+            document.getElementById('btn-copy-link').onclick = () => {
+                const link = `${window.location.origin}${window.location.pathname}?c=${code}`;
+                navigator.clipboard.writeText(link).then(() => {
+                    showCustomAlert("Link Copied! Send it to friend.");
+                });
+            };
+
             startExpiryTimer();
         });
         
@@ -1577,7 +1599,7 @@
     function tickScanner() { const v = document.getElementById('video-preview'); if(v.readyState === v.HAVE_ENOUGH_DATA) { const cvs = document.createElement("canvas"); cvs.width = v.videoWidth; cvs.height = v.videoHeight; const ctx = cvs.getContext("2d"); ctx.drawImage(v, 0, 0); const data = jsQR(ctx.getImageData(0,0,cvs.width,cvs.height).data, cvs.width, cvs.height); if(data) { const c = new URL(data.data).searchParams.get("c"); if(c) { document.getElementById('targetCode').value = c; closeScanner(); triggerAd('receive'); return; } } } if(document.getElementById('scanner-modal').style.display === 'flex') requestAnimationFrame(tickScanner); }
     function initStars() { const c = document.getElementById('stars'); for(let i=0; i<80; i++) { const s = document.createElement('div'); s.className = 'star'; s.style.width = s.style.height = Math.random()*2+'px'; s.style.left = Math.random()*100+'%'; s.style.top = Math.random()*100+'%'; s.style.animationDuration = Math.random()*20+20+'s'; c.appendChild(s); } }
     
-    window.onload = () => { initStars(); applyI18N(); initDragAndDrop(); renderHistory(); detectAdBlock(); updateNetworkStatus(); };
+    window.onload = () => { initStars(); applyI18N(); initDragAndDrop(); renderHistory(); detectAdBlock(); updateNetworkStatus(); checkUrlCode(); };
 </script>
 </body>
 </html>
