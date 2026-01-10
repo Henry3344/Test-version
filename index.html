@@ -1271,11 +1271,37 @@ function runOCRWithAd(imageBlob) {
     function initDragAndDrop() { const dz = document.getElementById('drop-zone'); document.body.addEventListener('dragenter', (e) => { if (e.dataTransfer.types && e.dataTransfer.types.includes('Files')) { e.preventDefault(); dz.style.display = 'flex'; } }); ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(name => { document.body.addEventListener(name, (e) => { e.preventDefault(); e.stopPropagation(); }, false); }); dz.addEventListener('dragleave', (e) => { if(e.target === dz) dz.style.display = 'none'; }); dz.addEventListener('drop', (e) => { dz.style.display = 'none'; handleFiles(e.dataTransfer.files); document.getElementById('tab-send').click(); }); }
     function dismissAdBlock() { isAdBlockIgnored = true; document.getElementById('safety-notice-view').style.display = 'none'; document.querySelectorAll('.ad-space, .ad-side').forEach(el => el.style.display = 'none'); }
     
-    /* --- [关键更新] 触发广告 (文案已改为真诚提示) --- */
-function triggerAd(mode) { 
-    // 删掉所有计时逻辑，直接运行功能
-    mode.startsWith('send') ? initSender() : startReceiving(); 
-}
+/* --- [关键更新] 触发广告 (带空状态拦截验证) --- */
+    function triggerAd(mode) { 
+        const d = I18N[currLang] || I18N['en'];
+
+        // 1. 发送文件模式：必须有文件
+        if (mode === 'send-file') {
+            if (!stagedFiles || stagedFiles.length === 0) {
+                showCustomAlert(d.fileErr || "Please select files first.");
+                return; // 拦截，不继续
+            }
+            initSender();
+        }
+        // 2. 发送文字模式：必须有文字
+        else if (mode === 'send-text') {
+            const textVal = document.getElementById('quickText').value.trim();
+            if (!textVal) {
+                showCustomAlert(d.textErr || "Please enter text first.");
+                return; // 拦截，不继续
+            }
+            initSender();
+        }
+        // 3. 接收模式：验证码必须够6位
+        else if (mode === 'receive') {
+            const codeVal = document.getElementById('targetCode').value.trim();
+            if (!codeVal || codeVal.length < 6) {
+                showCustomAlert(d.inputErr || "Enter 6-digit code.");
+                return; // 拦截，不继续
+            }
+            startReceiving();
+        }
+    }
 
     let isEncrypted = false, aesKey = "";
     const FlashDropCrypto = { async deriveKey(pass, salt) { const encoder = new TextEncoder(); const baseKey = await crypto.subtle.importKey("raw", encoder.encode(pass), "PBKDF2", false, ["deriveKey"]); return crypto.subtle.deriveKey({ name: "PBKDF2", salt: salt, iterations: 600000, hash: "SHA-256" }, baseKey, { name: "AES-GCM", length: 256 }, false, ["encrypt", "decrypt"]); }, async encrypt(blob, pass) { const salt = crypto.getRandomValues(new Uint8Array(16)); const iv = crypto.getRandomValues(new Uint8Array(12)); const key = await this.deriveKey(pass, salt); const data = await blob.arrayBuffer(); const ct = await crypto.subtle.encrypt({ name: "AES-GCM", iv: iv }, key, data); return new Blob([salt, iv, new Uint8Array(ct)]); }, async decrypt(blob, pass) { try { const buf = await blob.arrayBuffer(); const salt = new Uint8Array(buf.slice(0, 16)); const iv = new Uint8Array(buf.slice(16, 28)); const ct = buf.slice(28); const key = await this.deriveKey(pass, salt); const pt = await crypto.subtle.decrypt({ name: "AES-GCM", iv: iv }, key, ct); return new Blob([pt]); } catch (e) { throw new Error("ENC_FAILED"); } } };
