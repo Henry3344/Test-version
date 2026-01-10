@@ -297,84 +297,142 @@
         
         .step-item:first-child .step-dot { background: var(--primary); box-shadow: 0 0 10px var(--primary); }
         .step-item:first-child span { color: white; }
-                /* --- Henry的原生推荐块专用样式 (开始) --- */
+
+/* --- VPN 横幅专用样式 (升级版) --- */
 .native-promo-container {
-    background: linear-gradient(135deg, #1a1a2a 0%, #2d2d44 100%);
-    border: 1px solid #3f3f5a;
-    border-radius: 12px;
-    padding: 15px 20px;
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.95) 100%);
+    border: 1px solid rgba(99, 102, 241, 0.3); /* 边框发光 */
+    border-radius: 16px;
+    padding: 20px 25px;
     display: flex;
-    flex-direction: column; /* 【修改】强制变成垂直（上下）排列 */
-    align-items: flex-start; /* 【修改】让内容靠左对齐 */
-    justify-content: center;
-    margin: 15px auto;
-    max-width: 1100px; /* 如果觉得还是太宽，可以把这个数字改小，比如 800px */
-    gap: 15px; /* 控制文字和按钮之间的上下距离 */
+    flex-direction: row; /* 电脑端横向排列 */
+    align-items: center;
+    justify-content: space-between;
+    margin: 20px auto;
+    max-width: 900px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.5);
+    gap: 20px;
+}
+
+/* 背景网格装饰 (不抢眼，但增加质感) */
+.promo-bg-grid {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: radial-gradient(rgba(99, 102, 241, 0.1) 1px, transparent 1px);
+    background-size: 20px 20px;
+    z-index: 0;
+    pointer-events: none;
 }
 
 .promo-content {
     display: flex;
     align-items: center;
-    gap: 15px;
-    width: 100%; /* 【新增】让文字区域横向占满 */
+    gap: 20px;
+    z-index: 1; /* 确保在背景之上 */
+    flex: 1;
 }
 
-.promo-icon {
-    background: rgba(99, 102, 241, 0.2);
-    color: #818cf8;
-    min-width: 40px; /* 固定寬度防止縮小 */
-    height: 40px;
-    border-radius: 50%;
+/* 图标容器 */
+.promo-icon-box {
+    position: relative;
+    width: 50px;
+    height: 50px;
+    flex-shrink: 0;
     display: flex;
-    align-items: center;
     justify-content: center;
-    font-size: 20px;
+    align-items: center;
+}
+
+/* SVG 盾牌动画 */
+.floating-shield {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 0 10px rgba(99, 102, 241, 0.6)); /* 发光效果 */
+    animation: floatShield 3s ease-in-out infinite; /* 浮动动画 */
+}
+
+/* 浮动关键帧 */
+@keyframes floatShield {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+}
+
+/* 图标底部光晕 */
+.icon-glow {
+    position: absolute;
+    bottom: -5px;
+    width: 30px;
+    height: 10px;
+    background: rgba(99, 102, 241, 0.4);
+    border-radius: 50%;
+    filter: blur(5px);
+    animation: shadowScale 3s ease-in-out infinite;
+}
+
+@keyframes shadowScale {
+    0%, 100% { transform: scale(1); opacity: 0.4; }
+    50% { transform: scale(0.6); opacity: 0.2; }
 }
 
 .promo-text h3 {
     color: #ffffff;
-    margin: 0;
-    font-size: 16px;
-    font-weight: 700;
+    margin: 0 0 4px 0;
+    font-size: 18px;
+    font-weight: 800;
+    background: linear-gradient(90deg, #fff, #c7d2fe);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .promo-text p {
-    color: #a0a0b0;
-    margin: 2px 0 0 0;
+    color: #94a3b8;
+    margin: 0;
     font-size: 13px;
+    line-height: 1.4;
 }
 
+/* 按钮样式 */
 .promo-btn {
     background: #6366f1;
     color: white;
     text-decoration: none;
-    padding: 10px 0; /* 【修改】上下10px，左右不需要了，因为下面有居中 */
-    border-radius: 8px;
+    padding: 12px 24px;
+    border-radius: 10px;
     font-weight: 700;
-    font-size: 13px;
+    font-size: 14px;
     white-space: nowrap;
     transition: all 0.2s;
-    width: 100%;       /* 【新增】让按钮撑满第二行，方便点击 */
-    text-align: center; /* 【新增】文字居中 */
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+    z-index: 1;
+    text-align: center;
 }
 
 .promo-btn:hover {
     background: #4f46e5;
-    transform: translateY(-1px);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
 }
 
-/* 移動端適配：盾牌依然在頭部，但按鈕換行以保證文字寬度 */
+/* 移动端适配：变为垂直排列 */
 @media (max-width: 768px) {
     .native-promo-container {
         flex-direction: column;
-        align-items: flex-start;
-        padding: 12px 15px;
+        text-align: center;
+        padding: 20px;
+        gap: 15px;
     }
     
+    .promo-content {
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+    }
+
     .promo-btn {
-        width: 100%; /* 移動端按鈕撐滿更方便點擊 */
-        text-align: center;
-        margin-top: 5px;
+        width: 100%;
+        padding: 14px 0;
     }
 }
 /* --- Henry的原生推荐块专用样式 (结束) --- */
@@ -437,13 +495,28 @@
     <div id="drop-zone"><h2 style="font-size:36px; color:white; font-weight:900;" id="drop-text">DROP TO STAGE</h2></div>
     
 <div class="native-promo-container">
+    <div class="promo-bg-grid"></div>
+
     <div class="promo-content">
-        <div class="promo-icon">🛡️</div>
+        <div class="promo-icon-box">
+            <svg class="floating-shield" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 22C12 22 20 18 20 12V5L12 2L4 5V12C4 18 12 22 12 22Z" fill="url(#shield_gradient)" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M9 12L11 14L15 10" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <defs>
+                    <linearGradient id="shield_gradient" x1="12" y1="2" x2="12" y2="22" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#6366f1"/> <stop offset="1" stop-color="#4f46e5" stop-opacity="0.6"/>
+                    </linearGradient>
+                </defs>
+            </svg>
+            <div class="icon-glow"></div>
+        </div>
+
         <div class="promo-text">
             <h3 id="promo-title">Protect Your Privacy & Secure Your Connection</h3>
             <p id="promo-desc">Trusted VPN for users in US, UK & Japan.</p>
         </div>
     </div>
+
     <a href="https://www.anrdoezrs.net/click-101629766-15554637" target="_blank" class="promo-btn" id="promo-btn">
         Check Best VPN for Your Country →
     </a>
@@ -472,11 +545,11 @@
 
     <div class="link-block">
         <h4 id="L-h3">Use Cases</h4>
-        <a href="blog/Usage-Scenarios/Secure-File-Sharing-for-Remote-Work.html" id="L-3-1">Secure Remote Work</a>
-        <a href="blog/Usage-Scenarios/Safe-Text-Sharing-Between-Devices.html" id="L-3-2">Safe Text Sharing</a>
-        <a href="blog/Usage-Scenarios/P2P-File-Transfer-Without-Cloud.html" id="L-3-3">P2P Without Cloud</a>
-        <a href="blog/Usage-Scenarios/How-to-Protect-Data-on-Hotel-Wi-Fi.html" id="L-3-4">Protect Data in Hotels</a>
-        <a href="blog/Usage-Scenarios/File-Transfer-While-Traveling.html" id="L-3-5">Traveling with Data</a>
+        <a href="blog/Usage Scenarios/Secure-File-Sharing-for-Remote-Work.html" id="L-3-1">Secure Remote Work</a>
+        <a href="blog/Usage Scenarios/Safe-Text-Sharing-Between-Devices.html" id="L-3-2">Safe Text Sharing</a>
+        <a href="blog/Usage Scenarios/P2P-File-Transfer-Without-Cloud.html" id="L-3-3">P2P Without Cloud</a>
+        <a href="blog/Usage Scenarios/How-to-Protect-Data-on-Hotel-Wi-Fi.html" id="L-3-4">Protect Data in Hotels</a>
+        <a href="blog/Usage Scenarios/File-Transfer-While-Traveling.html" id="L-3-5">Traveling with Data</a>
     </div>
 </div>
 
@@ -670,7 +743,7 @@
     <div class="link-block">
         <h4 id="R-h2">Regional Use Cases</h4>
         <a href="blog/VPN-Guides/Public-Wi-Fi-Safety-Tips.html" id="R-2-1">VPN for Japan Public Wi-Fi</a>
-        <a href="blog/Usage-Scenarios/Secure-File-Sharing-for-Remote-Work.html" id="R-2-2">VPN for US Remote Workers</a>
+        <a href="blog/Usage Scenarios/Secure-File-Sharing-for-Remote-Work.html" id="R-2-2">VPN for US Remote Workers</a>
         <a href="blog/VPN-Guides/Is-VPN-Legal-in-My-Country.html" id="R-2-3">VPN for UK Privacy Laws</a>
         <a href="blog/Usage-Scenarios/File-Transfer-While-Traveling.html" id="R-2-4">VPN for Asia Travelers</a>
         <a href="blog/Usage-Scenarios/P2P-File-Transfer-Without-Cloud.html" id="R-2-5">VPN for International Transfers</a>
