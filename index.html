@@ -304,17 +304,19 @@
     border-radius: 12px;
     padding: 15px 20px;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    flex-direction: column; /* 【修改】强制变成垂直（上下）排列 */
+    align-items: flex-start; /* 【修改】让内容靠左对齐 */
+    justify-content: center;
     margin: 15px auto;
-    max-width: 1100px;
-    gap: 15px;
+    max-width: 1100px; /* 如果觉得还是太宽，可以把这个数字改小，比如 800px */
+    gap: 15px; /* 控制文字和按钮之间的上下距离 */
 }
 
 .promo-content {
     display: flex;
-    align-items: center; /* 確保盾牌與文字中線對齊 */
+    align-items: center;
     gap: 15px;
+    width: 100%; /* 【新增】让文字区域横向占满 */
 }
 
 .promo-icon {
@@ -346,12 +348,14 @@
     background: #6366f1;
     color: white;
     text-decoration: none;
-    padding: 10px 25px; /* 縮窄了水平內邊距 */
+    padding: 10px 0; /* 【修改】上下10px，左右不需要了，因为下面有居中 */
     border-radius: 8px;
     font-weight: 700;
     font-size: 13px;
     white-space: nowrap;
     transition: all 0.2s;
+    width: 100%;       /* 【新增】让按钮撑满第二行，方便点击 */
+    text-align: center; /* 【新增】文字居中 */
 }
 
 .promo-btn:hover {
